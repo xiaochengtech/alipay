@@ -14,7 +14,14 @@ func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp Cre
 	if err != nil {
 		return
 	}
-	err = json.Unmarshal(bytes, &aliRsp)
+	var response CreateTradeResponseModel
+	if err = json.Unmarshal(bytes, &response); err != nil {
+		return
+	}
+	if err = c.verifySign(response.Data, response.Sign); err != nil {
+		return
+	}
+	err = json.Unmarshal(response.Data, &aliRsp)
 	return
 }
 
@@ -29,4 +36,9 @@ type CreateTradeResponse struct {
 	// 响应参数
 	OutTradeNo string `json:"out_trade_no"` // 商户订单号
 	TradeNo    string `json:"trade_no"`     // 支付宝交易号
+}
+
+type CreateTradeResponseModel struct {
+	Data []byte `json:"alipay_trade_create_response"` // 返回值信息
+	Sign string `json:"sign"`                         // 签名，参见https://docs.open.alipay.com/291/106074
 }

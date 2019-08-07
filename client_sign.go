@@ -9,6 +9,7 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"encoding/base64"
+	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
@@ -54,6 +55,52 @@ func (c *Client) getSign(body BodyMap, signType string, privateKey string) (sign
 		return
 	}
 	sign = base64.StdEncoding.EncodeToString(encryptedBytes)
+	return
+}
+
+// 验证返回值签名
+func (c *Client) verifySign(data []byte, sign string) (err error) {
+	var (
+		h hash.Hash
+		hashs crypto.Hash
+		body BodyMap
+	)
+	pKey := c.FormatPublicKey(c.publicKey)
+	if err = json.Unmarshal(data, &body); err != nil {
+		return
+	}
+	signData := c.sortSignParams(body)
+	signBytes, err := base64.StdEncoding.DecodeString(sign)
+	if err != nil {
+		return err
+	}
+	// 解析秘钥
+	block, _ := pem.Decode([]byte(pKey))
+	if block == nil {
+		err = errors.New("支付宝公钥错误")
+		return
+	}
+	key, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return
+	}
+	publicKey, ok := key.(*rsa.PublicKey)
+	if !ok {
+		err = errors.New("支付宝公钥转换错误")
+		return
+	}
+	// 判断签名方式
+	switch c.config.SignType {
+	case SignTypeRSA:
+		hashs = crypto.SHA1
+	case SignTypeRSA2:
+		fallthrough
+	default:
+		hashs = crypto.SHA256
+	}
+	h = hashs.New()
+	h.Write([]byte(signData))
+	err = rsa.VerifyPKCS1v15(publicKey, hashs, h.Sum(nil), signBytes)
 	return
 }
 
