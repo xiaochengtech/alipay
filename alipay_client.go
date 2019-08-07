@@ -4,30 +4,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/parnurzeal/gorequest"
 	"golang.org/x/text/encoding/simplifiedchinese"
-	"log"
-	"time"
 )
 
-type aliPayClient struct {
-	AppId        string
-	privateKey   string
-	ReturnUrl    string
-	NotifyUrl    string
-	Charset      string
-	SignType     string
-	AppAuthToken string
-	isProd       bool
+type Client struct {
+	config     Config // 配置信息
+	privateKey string // 应用私钥
+	isProd     bool   // 是否是生产环境
 }
 
-//初始化支付宝客户端
-//    appId：应用ID
-//    privateKey：应用私钥
-//    isProd：是否是正式环境
-func NewAliPayClient(appId, privateKey string, isProd bool) (client *aliPayClient) {
-	client = new(aliPayClient)
-	client.AppId = appId
+// 初始化支付宝客户端
+func NewClient(isProd bool, privateKey string, config Config) (client *Client) {
+	client = new(Client)
+	client.config = config
 	client.privateKey = privateKey
 	client.isProd = isProd
 	return client
@@ -41,34 +30,6 @@ func (this *aliPayClient) AliPayTradeFastPayRefundQuery(body BodyMap) {
 //alipay.trade.order.settle(统一收单交易结算接口)
 func (this *aliPayClient) AliPayTradeOrderSettle(body BodyMap) {
 
-}
-
-//alipay.trade.create(统一收单交易创建接口)
-func (this *aliPayClient) AliPayTradeCreate(body BodyMap) (aliRsp *AliPayTradeCreateResponse, err error) {
-	var bytes []byte
-	trade1 := body.Get("out_trade_no")
-	trade2 := body.Get("buyer_id")
-	if trade1 == null && trade2 == null {
-		return nil, errors.New("out_trade_no and buyer_id are not allowed to be null at the same time")
-	}
-	//===============product_code值===================
-	bytes, err = this.doAliPay(body, "alipay.trade.create")
-	if err != nil {
-		return nil, err
-	}
-
-	convertBytes, _ := simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
-	//log.Println("AliPayTradeCreate::::", string(convertBytes))
-	aliRsp = new(AliPayTradeCreateResponse)
-	err = json.Unmarshal(convertBytes, aliRsp)
-	if err != nil {
-		return nil, err
-	}
-	if aliRsp.AliPayTradeCreateResponse.Code != "10000" {
-		info := aliRsp.AliPayTradeCreateResponse
-		return nil, fmt.Errorf("code:%v,msg:%v,sub_code:%v,sub_msg:%v.", info.Code, info.Msg, info.SubCode, info.SubMsg)
-	}
-	return aliRsp, nil
 }
 
 //alipay.trade.close(统一收单交易关闭接口)
@@ -260,93 +221,4 @@ func (this *aliPayClient) ZhimaCreditScoreBriefGet(body BodyMap) {
 //zhima.credit.score.get(芝麻分)
 func (this *aliPayClient) ZhimaCreditScoreGet(body BodyMap) {
 
-}
-
-//向支付宝发送请求
-func (this *aliPayClient) doAliPay(body BodyMap, method string) (bytes []byte, err error) {
-	//===============转换body参数===================
-	bodyStr, err := json.Marshal(body)
-	if err != nil {
-		log.Println("json.Marshal:", err)
-		return nil, err
-	}
-	//fmt.Println(string(bodyStr))
-	//===============生成参数===================
-	pubBody := make(BodyMap)
-	pubBody.Set("app_id", this.AppId)
-	pubBody.Set("method", method)
-	pubBody.Set("format", "JSON")
-	if this.ReturnUrl != null {
-		pubBody.Set("return_url", this.ReturnUrl)
-	}
-	if this.Charset == null {
-		pubBody.Set("charset", "UTF-8")
-	} else {
-		pubBody.Set("charset", this.Charset)
-	}
-	if this.SignType == null {
-		pubBody.Set("sign_type", "RSA2")
-	} else {
-		pubBody.Set("sign_type", this.SignType)
-	}
-	pubBody.Set("timestamp", time.Now().Format(TimeLayout))
-	pubBody.Set("version", "1.0")
-	if this.NotifyUrl != null {
-		pubBody.Set("notify_url", this.NotifyUrl)
-	}
-	if this.AppAuthToken != null {
-		pubBody.Set("app_auth_token", this.AppAuthToken)
-	}
-	pubBody.Set("biz_content", string(bodyStr))
-	//===============获取签名===================
-	pKey := FormatPrivateKey(this.privateKey)
-	sign, err := getRsaSign(pubBody, pubBody.Get("sign_type"), pKey)
-	if err != nil {
-		return nil, err
-	}
-	pubBody.Set("sign", sign)
-	//fmt.Println("rsaSign:", sign)
-	//===============发起请求===================
-	urlParam := FormatAliPayURLParam(pubBody)
-	//fmt.Println("urlParam:", urlParam)
-	if method == "alipay.trade.app.pay" {
-		return []byte(urlParam), nil
-	}
-	if method == "alipay.trade.page.pay" {
-		if !this.isProd {
-			//沙箱环境
-			return []byte(zfb_sanbox_base_url + "?" + urlParam), nil
-		} else {
-			//正式环境
-			return []byte(zfb_base_url + "?" + urlParam), nil
-		}
-	}
-	var url string
-	agent := gorequest.New()
-	if !this.isProd {
-		//沙箱环境
-		url = zfb_sanbox_base_url
-		//fmt.Println(url)
-		agent.Post(url)
-	} else {
-		//正式环境
-		url = zfb_base_url
-		//fmt.Println(url)
-		agent.Post(url)
-	}
-	rsp, bs, errs := agent.
-		Type("form-data").
-		SendString(urlParam).
-		EndBytes()
-	if len(errs) > 0 {
-		return nil, errs[0]
-	}
-	if method == "alipay.trade.wap.pay" {
-		//fmt.Println("rsp:::", rsp.Body)
-		if rsp.Request.URL.String() == zfb_base_url || rsp.Request.URL.String() == zfb_sanbox_base_url {
-			return nil, errors.New("请求手机网站支付出错，请检查各个参数或秘钥是否正确")
-		}
-		return []byte(rsp.Request.URL.String()), nil
-	}
-	return bs, nil
 }
