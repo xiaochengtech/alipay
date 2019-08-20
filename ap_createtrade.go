@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 // 统一收单交易创建接口
@@ -12,12 +11,11 @@ func (c *Client) CreateTrade(body CreateTradeBody) (aliRsp CreateTradeResponse, 
 	if err != nil {
 		return
 	}
-	fmt.Println(string(bytes))
 	var response CreateTradeResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	if err = c.verifySign(response.Data, response.Sign); err != nil {
+	if err = c.verifySignSync(response.Data, response.Sign); err != nil {
 		return
 	}
 	aliRsp = response.Data

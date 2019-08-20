@@ -35,13 +35,6 @@ type AliPayNotifyRequest struct {
 	VoucherDetailList []VoucherDetailListInfo `json:"voucher_detail_list"`
 }
 
-type FundBillListInfo struct {
-	Amount      string `json:"amount"`
-	FundChannel string `json:"fund_channel"`
-	BankCode    string `json:"bank_code,omitempty"`
-	RealAmount  string `json:"real_amount,omitempty"`
-}
-
 type VoucherDetailListInfo struct {
 	Id                         string `json:"id"`
 	Name                       string `json:"name"`
@@ -59,16 +52,6 @@ type VoucherDetailListInfo struct {
 type AliPayTradePayResponse struct {
 	AlipayTradePayResponse AlipayTradeResponseInfo `json:"alipay_trade_pay_response"`
 	Sign                   string                  `json:"sign"`
-}
-
-type AliPayTradeQueryResponse struct {
-	AlipayTradeQueryResponse AlipayTradeResponseInfo `json:"alipay_trade_query_response"`
-	Sign                     string                  `json:"sign"`
-}
-
-type AliPayTradeCreateResponse struct {
-	AliPayTradeCreateResponse AlipayTradeResponseInfo `json:"alipay_trade_create_response"`
-	Sign                      string                  `json:"sign"`
 }
 
 type AliPayTradeCloseResponse struct {

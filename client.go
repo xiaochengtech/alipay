@@ -217,14 +217,4 @@ func (this *aliPayClient) AliPayTradePagePay(body BodyMap) (payUrl string, err e
 func (this *aliPayClient) AliPayTradeOrderinfoSync(body BodyMap) {
 
 }
-
-//zhima.credit.score.brief.get(芝麻分普惠版)
-func (this *aliPayClient) ZhimaCreditScoreBriefGet(body BodyMap) {
-
-}
-
-//zhima.credit.score.get(芝麻分)
-func (this *aliPayClient) ZhimaCreditScoreGet(body BodyMap) {
-
-}
 */
