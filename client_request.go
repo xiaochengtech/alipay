@@ -2,12 +2,13 @@ package alipay
 
 import (
 	"encoding/json"
-	"golang.org/x/text/encoding/simplifiedchinese"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
 // 生成请求参数
@@ -17,10 +18,14 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 	if err != nil {
 		return
 	}
-	// 生成请求参数
+	// 生成公共请求参数
 	params["app_id"] = c.config.AppId
 	params["method"] = method
-	params["format"] = FormatJson
+	if c.config.Format != "" {
+		params["format"] = c.config.Format
+	} else {
+		params["format"] = FormatJson
+	}
 	if c.config.Charset != "" {
 		params["charset"] = c.config.Charset
 	} else {
@@ -34,7 +39,14 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 	}
 	params["sign_type"] = signType
 	params["timestamp"] = time.Now().Format("2006-01-02 15:04:05")
-	params["version"] = Version1
+	if c.config.Version != "" {
+		params["version"] = c.config.Version
+	} else {
+		params["version"] = Version1
+	}
+	if c.config.NotifyUrl != "" {
+		params["notify_url"] = c.config.NotifyUrl
+	}
 	if c.config.AppAuthToken != "" {
 		params["app_auth_token"] = c.config.AppAuthToken
 	}
@@ -46,7 +58,7 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 		return
 	}
 	params["sign"] = sign
-	// 发起请求
+	// 格式化请求URL参数
 	urlParam = c.FormatURLParam(params)
 	return
 }
@@ -65,7 +77,7 @@ func (c *Client) doAliPay(method string, body interface{}, params BodyMap, isGBK
 	} else {
 		url = baseUrlSandbox
 	}
-	resp, err := http.Post(url, "multipart/form-data", strings.NewReader(urlParam))
+	resp, err := http.Post(url, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
 	if err != nil {
 		return
 	}

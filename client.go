@@ -1,12 +1,5 @@
 package alipay
 
-import (
-	"encoding/json"
-	"errors"
-	"fmt"
-	"golang.org/x/text/encoding/simplifiedchinese"
-)
-
 type Client struct {
 	config     Config // 配置信息
 	publicKey  string // 支付宝公钥
@@ -15,7 +8,7 @@ type Client struct {
 }
 
 // 初始化支付宝客户端
-func NewClient(isProd bool, privateKey string, publicKey string, config Config) (client *Client) {
+func NewClient(isProd bool, publicKey string, privateKey string, config Config) (client *Client) {
 	client = new(Client)
 	client.config = config
 	client.publicKey = publicKey
@@ -24,6 +17,16 @@ func NewClient(isProd bool, privateKey string, publicKey string, config Config) 
 	return client
 }
 
+//  测试用客户端
+var testClient = NewClient(false, aliPayPublicKey, aliPayPrivateKey, Config{
+	AppId:    "2016101000655815",
+	Format:   FormatJson,
+	Charset:  CharSetUTF8,
+	SignType: SignTypeRSA2,
+	Version:  Version1,
+})
+
+/*
 //alipay.trade.fastpay.refund.query(统一收单交易退款查询)
 func (this *aliPayClient) AliPayTradeFastPayRefundQuery(body BodyMap) {
 
@@ -224,3 +227,4 @@ func (this *aliPayClient) ZhimaCreditScoreBriefGet(body BodyMap) {
 func (this *aliPayClient) ZhimaCreditScoreGet(body BodyMap) {
 
 }
+*/

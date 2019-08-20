@@ -44,29 +44,33 @@ func (c *Client) getSign(body BodyMap, signType string, privateKey string) (sign
 		h = sha256.New()
 		hashs = crypto.SHA256
 	}
-	// 调用算法
+	// 拼接原始串
 	signStr := c.sortSignParams(body)
+	//fmt.Println(signStr)
 	_, err = h.Write([]byte(signStr))
 	if err != nil {
 		return
 	}
+	// 调用算法
 	encryptedBytes, err := rsa.SignPKCS1v15(rand.Reader, key, hashs, h.Sum(nil))
 	if err != nil {
 		return
 	}
+	// base64转码
 	sign = base64.StdEncoding.EncodeToString(encryptedBytes)
 	return
 }
 
 // 验证返回值签名
-func (c *Client) verifySign(data []byte, sign string) (err error) {
+func (c *Client) verifySign(data interface{}, sign string) (err error) {
 	var (
-		h hash.Hash
+		h     hash.Hash
 		hashs crypto.Hash
-		body BodyMap
+		body  BodyMap
 	)
 	pKey := c.FormatPublicKey(c.publicKey)
-	if err = json.Unmarshal(data, &body); err != nil {
+	dataBytes, _ := json.Marshal(data)
+	if err = json.Unmarshal(dataBytes, &body); err != nil {
 		return
 	}
 	signData := c.sortSignParams(body)
