@@ -25,16 +25,3 @@ var testClient = NewClient(false, aliPayPublicKey, aliPayPrivateKey, Config{
 	SignType: SignTypeRSA2,
 	Version:  Version1,
 })
-
-/*
-
-
-
-
-
-
-//alipay.trade.orderinfo.sync(支付宝订单信息同步接口)
-func (this *aliPayClient) AliPayTradeOrderinfoSync(body BodyMap) {
-
-}
-*/

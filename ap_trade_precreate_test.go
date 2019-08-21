@@ -14,7 +14,7 @@ func TestPreCreateTrade(t *testing.T) {
 	body.Subject = "测试车场阿里支付-停车费"
 
 	// 请求支付
-	aliRsp, err := testClient.PreCreateTrade(body)
+	aliRsp, err := testClient.PreCreateTrade(body, "")
 	if err != nil {
 		t.Error(err)
 		return

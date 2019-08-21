@@ -4,9 +4,13 @@ import (
 	"encoding/json"
 )
 
-// 统一收单交易预创接口
-func (c *Client) PreCreateTrade(body PreCreateTradeBody) (aliRsp PreCreateTradeResponse, err error) {
+// 统一收单交易预创接口，支付动作在支付宝内完成，根据传入的通知地址异步通知服务商（推荐），
+func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliRsp PreCreateTradeResponse, err error) {
 	params := BodyMap{}
+	// 按需设置公共请求参数
+	if len(notifyUrl) > 0 {
+		params["notify_url"] = notifyUrl
+	}
 	bytes, err := c.doAliPay("alipay.trade.precreate", body, params, true)
 	if err != nil {
 		return

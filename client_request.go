@@ -19,6 +19,7 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 		return
 	}
 	// 生成公共请求参数
+	// notify_url按需提前传入至params
 	params["app_id"] = c.config.AppId
 	params["method"] = method
 	if c.config.Format != "" {
@@ -43,9 +44,6 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 		params["version"] = c.config.Version
 	} else {
 		params["version"] = Version1
-	}
-	if c.config.NotifyUrl != "" {
-		params["notify_url"] = c.config.NotifyUrl
 	}
 	if c.config.AppAuthToken != "" {
 		params["app_auth_token"] = c.config.AppAuthToken
