@@ -47,4 +47,11 @@ const (
 
 	RoyaltyTypeTransfer  = "transfer"  // 普通分账
 	RoyaltyTypeReplenish = "replenish" // 补差
+
+	BizTypeCreditAuth   = "CREDIT_AUTH"   // 信用授权场景下传
+	BizTypeCreditDeduct = "CREDIT_DEDUCT" // 信用代扣场景下传
+
+	OrderBizStatusComplete = "COMPLETE" // 同步用户已履约
+	OrderBizStatusClosed   = "CLOSED"   // 同步履约已取消
+	OrderBizStatusViolated = "VIOLATED" // 用户已违约
 )

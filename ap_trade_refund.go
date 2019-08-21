@@ -54,7 +54,7 @@ type RefundTradeResponse struct {
 	// 响应参数
 	TradeNo               string             `json:"trade_no"`                                  // 支付宝交易号
 	OutTradeNo            string             `json:"out_trade_no"`                              // 商户订单号
-	BuyerId               string             `json:"buyer_logon_id"`                            // 买家支付宝账号
+	BuyerLogonId          string             `json:"buyer_logon_id"`                            // 买家支付宝账号
 	FundChange            string             `json:"fund_change"`                               // 本次退款是否发生了资金变化
 	RefundFee             string             `json:"refund_fee"`                                // 退款总金额
 	RefundCurrency        string             `json:"refund_currency,omitempty"`                 // 退款币种信息

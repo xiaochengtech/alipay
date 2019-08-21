@@ -35,7 +35,7 @@ type QueryTradeResponse struct {
 	// 响应参数
 	TradeNo             string           `json:"trade_no"`               // 支付宝交易号
 	OutTradeNo          string           `json:"out_trade_no"`           // 商户订单号
-	BuyerId             string           `json:"buyer_logon_id"`         // 买家支付宝账号
+	BuyerLogonId        string           `json:"buyer_logon_id"`         // 买家支付宝账号
 	TradeStatus         string           `json:"trade_status"`           // 交易状态
 	TotalAmount         string           `json:"total_amount"`           // 订单总金额
 	TransCurrency       string           `json:"trans_currency"`         // 标价币种

@@ -27,10 +27,7 @@ var testClient = NewClient(false, aliPayPublicKey, aliPayPrivateKey, Config{
 })
 
 /*
-//alipay.trade.fastpay.refund.query(统一收单交易退款查询)
-func (this *aliPayClient) AliPayTradeFastPayRefundQuery(body BodyMap) {
 
-}
 
 
 

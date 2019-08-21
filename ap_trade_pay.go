@@ -57,7 +57,7 @@ type PayTradeResponse struct {
 	// 响应参数
 	TradeNo             string           `json:"trade_no"`                        // 支付宝交易号
 	OutTradeNo          string           `json:"out_trade_no"`                    // 商户订单号
-	BuyerId             string           `json:"buyer_logon_id"`                  // 买家支付宝账号
+	BuyerLogonId        string           `json:"buyer_logon_id"`                  // 买家支付宝账号
 	SettleAmount        string           `json:"settle_amount,omitempty"`         // 结算币种订单金额
 	PayCurrency         string           `json:"pay_currency,omitempty"`          // 订单支付币种
 	PayAmount           string           `json:"pay_amount,omitempty"`            // 支付币种订单金额
