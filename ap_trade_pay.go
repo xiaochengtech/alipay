@@ -12,7 +12,6 @@ func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error
 	if err != nil {
 		return
 	}
-	//fmt.Println(string(bytes))
 	var response PayTradeResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return

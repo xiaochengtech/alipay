@@ -12,7 +12,6 @@ func (c *Client) CancelTrade(body CancelTradeBody) (aliRsp CancelTradeResponse, 
 	if err != nil {
 		return
 	}
-	//fmt.Println(string(bytes))
 	var response CancelTradeResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
