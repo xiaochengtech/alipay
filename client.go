@@ -32,16 +32,8 @@ func (this *aliPayClient) AliPayTradeFastPayRefundQuery(body BodyMap) {
 
 }
 
-//alipay.trade.order.settle(统一收单交易结算接口)
-func (this *aliPayClient) AliPayTradeOrderSettle(body BodyMap) {
-
-}
 
 
-//alipay.trade.refund(统一收单交易退款接口)
-func (this *aliPayClient) AliPayTradeRefund(body BodyMap) {
-
-}
 
 
 //alipay.trade.orderinfo.sync(支付宝订单信息同步接口)

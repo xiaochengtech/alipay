@@ -30,6 +30,9 @@ const (
 	TransInTypeUser  = "userId"      // 表示是支付宝账号对应的支付宝唯一用户号
 	TransInTypeLogin = "loginName"   // 表示是支付宝登录号
 
+	TransOutTypeUser  = "userId"    // 表示是支付宝账号对应的支付宝唯一用户号
+	TransOutTypeLogin = "loginName" // 表示是支付宝登录号
+
 	LogisticsTypePost    = "POST"    // 平邮
 	LogisticsTypeExpress = "EXPRESS" // 其他快递
 	LogisticsTypeVirtual = "VIRTUAL" // 虚拟物品
@@ -41,4 +44,7 @@ const (
 
 	AuthConfirmModeComplete    = "COMPLETE"     // 转交易支付完成结束预授权，解冻剩余金额
 	AuthConfirmModeNotComplete = "NOT_COMPLETE" // 转交易支付完成不结束预授权，不解冻剩余金额
+
+	RoyaltyTypeTransfer  = "transfer"  // 普通分账
+	RoyaltyTypeReplenish = "replenish" // 补差
 )

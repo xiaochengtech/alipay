@@ -71,10 +71,11 @@ type QueryTradeResponse struct {
 }
 
 type FundBillListInfo struct {
-	FundChannel string  `json:"fund_channel"` // 交易使用的资金渠道
-	BankCode    string  `json:"bank_code"`    // 银行卡支付时的银行代码
-	Amount      float32 `json:"amount"`       // 该支付工具类型所使用的金额
-	RealAmount  float32 `json:"real_amount"`  // 渠道实际付款金额
+	FundChannel string  `json:"fund_channel"`          // 交易使用的资金渠道
+	BankCode    string  `json:"bank_code,omitempty"`   // 银行卡支付时的银行代码
+	Amount      float32 `json:"amount"`                // 该支付工具类型所使用的金额
+	RealAmount  float32 `json:"real_amount,omitempty"` // 渠道实际付款金额
+	FundType    string  `json:"fund_type,omitempty"`   // 渠道所使用的资金类型
 }
 
 type TradeSettleInfo struct {
