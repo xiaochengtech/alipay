@@ -23,6 +23,9 @@ const (
 	// 版本号
 	Version1 = "1.0" // 1.0版本
 
+	// 货币类型
+	FeeTypeCNY = "CNY" // 人民币
+
 	TransInTypeCard  = "cardAliasNo" // 结算收款方的银行卡编号
 	TransInTypeUser  = "userId"      // 表示是支付宝账号对应的支付宝唯一用户号
 	TransInTypeLogin = "loginName"   // 表示是支付宝登录号
@@ -32,4 +35,10 @@ const (
 	LogisticsTypeVirtual = "VIRTUAL" // 虚拟物品
 	LogisticsTypeEms     = "EMS"     // EMS
 	LogisticsTypeDirect  = "DIRECT"  // 无需物流
+
+	SceneByBar  = "bar_code"  // 条码支付
+	SceneByWave = "wave_code" // 声波支付
+
+	AuthConfirmModeComplete    = "COMPLETE"     // 转交易支付完成结束预授权，解冻剩余金额
+	AuthConfirmModeNotComplete = "NOT_COMPLETE" // 转交易支付完成不结束预授权，不解冻剩余金额
 )
