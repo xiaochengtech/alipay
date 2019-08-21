@@ -43,31 +43,6 @@ func (this *aliPayClient) AliPayTradeRefund(body BodyMap) {
 
 }
 
-//alipay.trade.precreate(统一收单线下交易预创建)
-func (this *aliPayClient) AliPayTradePrecreate(body BodyMap) {
-
-}
-
-//alipay.trade.page.pay(统一收单下单并支付页面接口)
-func (this *aliPayClient) AliPayTradePagePay(body BodyMap) (payUrl string, err error) {
-	var bytes []byte
-	trade := body.Get("out_trade_no")
-	if trade == null {
-		return null, errors.New("out_trade_no is not allowed to be null")
-	}
-	//===============product_code值===================
-	body.Set("product_code", "FAST_INSTANT_TRADE_PAY")
-	bytes, err = this.doAliPay(body, "alipay.trade.page.pay")
-	if err != nil {
-		//log.Println("err::", err.Error())
-		return null, err
-	}
-	payUrl = string(bytes)
-	if payUrl == zfb_sanbox_base_url || payUrl == zfb_base_url {
-		return null, errors.New("请求失败，请查看文档并检查参数")
-	}
-	return payUrl, nil
-}
 
 //alipay.trade.orderinfo.sync(支付宝订单信息同步接口)
 func (this *aliPayClient) AliPayTradeOrderinfoSync(body BodyMap) {

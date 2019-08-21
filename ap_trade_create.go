@@ -79,7 +79,9 @@ type Logistics struct {
 }
 
 type BusinessParam struct {
-	CampusCard string `json:"campus_card,omitempty"` // 校园卡编号
+	CampusCard      string `json:"campus_card,omitempty"`       // 校园卡编号
+	CardType        string `json:"card_type,omitempty"`         // 虚拟卡卡类型
+	ActualOrderTime string `json:"actual_order_time,omitempty"` // 实际订单时间
 }
 
 type ReceiverAddress struct {
