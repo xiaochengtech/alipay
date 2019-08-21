@@ -63,31 +63,7 @@ func (this *aliPayClient) AliPayTradeClose(body BodyMap) (aliRsp *AliPayTradeClo
 	return aliRsp, nil
 }
 
-//alipay.trade.cancel(统一收单交易撤销接口)
-func (this *aliPayClient) AliPayTradeCancel(body BodyMap) (aliRsp *AliPayTradeCancelResponse, err error) {
-	var bytes []byte
-	trade1 := body.Get("out_trade_no")
-	trade2 := body.Get("trade_no")
-	if trade1 == null && trade2 == null {
-		return nil, errors.New("out_trade_no and trade_no are not allowed to be null at the same time")
-	}
-	bytes, err = this.doAliPay(body, "alipay.trade.cancel")
-	if err != nil {
-		return nil, err
-	}
-	convertBytes, _ := simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
-	//log.Println("AliPayTradeCancel::::", string(convertBytes))
-	aliRsp = new(AliPayTradeCancelResponse)
-	err = json.Unmarshal(convertBytes, aliRsp)
-	if err != nil {
-		return nil, err
-	}
-	if aliRsp.AliPayTradeCancelResponse.Code != "10000" {
-		info := aliRsp.AliPayTradeCancelResponse
-		return nil, fmt.Errorf("code:%v,msg:%v,sub_code:%v,sub_msg:%v.", info.Code, info.Msg, info.SubCode, info.SubMsg)
-	}
-	return aliRsp, nil
-}
+
 
 //alipay.trade.refund(统一收单交易退款接口)
 func (this *aliPayClient) AliPayTradeRefund(body BodyMap) {
@@ -97,74 +73,6 @@ func (this *aliPayClient) AliPayTradeRefund(body BodyMap) {
 //alipay.trade.precreate(统一收单线下交易预创建)
 func (this *aliPayClient) AliPayTradePrecreate(body BodyMap) {
 
-}
-
-//alipay.trade.pay(统一收单交易支付接口)
-func (this *aliPayClient) AliPayTradePay(body BodyMap) (aliRsp *AliPayTradePayResponse, err error) {
-	var bytes []byte
-	trade := body.Get("out_trade_no")
-	if trade == null {
-		return nil, errors.New("out_trade_no is not allowed to be null")
-	}
-	//===============product_code值===================
-	//body.Set("product_code", "FACE_TO_FACE_PAYMENT")
-	bytes, err = this.doAliPay(body, "alipay.trade.pay")
-	if err != nil {
-		return nil, err
-	}
-
-	convertBytes, _ := simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
-	//log.Println("convertBytes::::", string(convertBytes))
-	aliRsp = new(AliPayTradePayResponse)
-	err = json.Unmarshal(convertBytes, aliRsp)
-	if err != nil {
-		return nil, err
-	}
-	if aliRsp.AlipayTradePayResponse.Code != "10000" {
-		info := aliRsp.AlipayTradePayResponse
-		return nil, fmt.Errorf("code:%v,msg:%v,sub_code:%v,sub_msg:%v.", info.Code, info.Msg, info.SubCode, info.SubMsg)
-	}
-	return aliRsp, nil
-}
-
-
-//alipay.trade.app.pay(app支付接口2.0)
-func (this *aliPayClient) AliPayTradeAppPay(body BodyMap) (payParam string, err error) {
-	var bytes []byte
-	trade := body.Get("out_trade_no")
-	if trade == null {
-		return null, errors.New("out_trade_no is not allowed to be null")
-	}
-	//===============product_code值===================
-	//body.Set("product_code", "QUICK_MSECURITY_PAY")
-	bytes, err = this.doAliPay(body, "alipay.trade.app.pay")
-	if err != nil {
-		return null, err
-	}
-	payParam = string(bytes)
-	return payParam, nil
-}
-
-//alipay.trade.wap.pay(手机网站支付接口2.0)
-func (this *aliPayClient) AliPayTradeWapPay(body BodyMap) (payUrl string, err error) {
-	var bytes []byte
-	trade := body.Get("out_trade_no")
-	if trade == null {
-		return null, errors.New("out_trade_no is not allowed to be null")
-	}
-	//===============product_code值===================
-	body.Set("product_code", "QUICK_WAP_WAY")
-	bytes, err = this.doAliPay(body, "alipay.trade.wap.pay")
-	if err != nil {
-		//log.Println("err::", err.Error())
-		return null, err
-	}
-	payUrl = string(bytes)
-	//fmt.Println("URL::", payUrl)
-	if payUrl == zfb_sanbox_base_url || payUrl == zfb_base_url {
-		return null, errors.New("请求失败，请查看文档并检查参数")
-	}
-	return payUrl, nil
 }
 
 //alipay.trade.page.pay(统一收单下单并支付页面接口)

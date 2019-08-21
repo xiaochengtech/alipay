@@ -49,19 +49,9 @@ type VoucherDetailListInfo struct {
 	PurchaseAntContribute      string `json:"purchase_ant_contribute,omitempty"`
 }
 
-type AliPayTradePayResponse struct {
-	AlipayTradePayResponse AlipayTradeResponseInfo `json:"alipay_trade_pay_response"`
-	Sign                   string                  `json:"sign"`
-}
-
 type AliPayTradeCloseResponse struct {
 	AlipayTradeCloseResponse AlipayTradeResponseInfo `json:"alipay_trade_close_response"`
 	Sign                     string                  `json:"sign"`
-}
-
-type AliPayTradeCancelResponse struct {
-	AliPayTradeCancelResponse AlipayTradeResponseInfo `json:"alipay_trade_cancel_response"`
-	Sign                      string                  `json:"sign"`
 }
 
 type AlipayTradeResponseInfo struct {
