@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // 统一收单交易支付接口
@@ -70,7 +69,7 @@ type PayTradeResponse struct {
 	BuyerPayAmount      string              `json:"buyer_pay_amount,omitempty"`      // 买家实付金额
 	PointAmount         string              `json:"point_amount,omitempty"`          // 积分支付的金额
 	InvoiceAmount       string              `json:"invoice_amount,omitempty"`        // 可开具发票的金额
-	GmtPayment          time.Time           `json:"gmt_payment"`                     // 交易支付时间
+	GmtPayment          string              `json:"gmt_payment"`                     // 交易支付时间
 	FundBillList        *[]FundBillListInfo `json:"fund_bill_list"`                  // 交易支付使用的资金渠道
 	CardBalance         string              `json:"card_balance,omitempty"`          // 支付宝卡余额
 	StoreName           string              `json:"store_name,omitempty"`            // 请求交易支付中的商户店铺的名称

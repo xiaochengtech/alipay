@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // 统一收单线下交易查询接口
@@ -83,12 +82,12 @@ type TradeSettleInfo struct {
 }
 
 type TradeSettleDetail struct {
-	OperationType     string    `json:"operation_type"`                // 结算操作类型
-	OperationSerialNo string    `json:"operation_serial_no,omitempty"` // 商户操作序列号
-	OperationDate     time.Time `json:"operation_dt"`                  // 操作日期
-	TransOut          string    `json:"trans_out,omitempty"`           // 转出账号
-	TransIn           string    `json:"trans_in,omitempty"`            // 转入账号
-	Amount            float32   `json:"amount"`                        // 实际操作金额
+	OperationType     string  `json:"operation_type"`                // 结算操作类型
+	OperationSerialNo string  `json:"operation_serial_no,omitempty"` // 商户操作序列号
+	OperationDate     string  `json:"operation_dt"`                  // 操作日期
+	TransOut          string  `json:"trans_out,omitempty"`           // 转出账号
+	TransIn           string  `json:"trans_in,omitempty"`            // 转入账号
+	Amount            float32 `json:"amount"`                        // 实际操作金额
 }
 
 type QueryTradeResponseModel struct {

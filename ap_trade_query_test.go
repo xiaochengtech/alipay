@@ -9,7 +9,7 @@ func TestQueryTrade(t *testing.T) {
 	fmt.Println("----------统一收单线下交易查询接口----------")
 	// 初始化参数
 	body := QueryTradeBody{}
-	body.OutTradeNo = "GYWX201908221240350111"
+	body.OutTradeNo = "GYWX201908221240350133"
 
 	// 请求支付
 	aliRsp, err := testClient.QueryTrade(body)

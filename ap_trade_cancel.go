@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // 统一收单交易撤销接口
@@ -31,12 +30,12 @@ type CancelTradeBody struct {
 type CancelTradeResponse struct {
 	ResponseModel
 	// 响应参数
-	TradeNo            string    `json:"trade_no"`                       // 支付宝交易号
-	OutTradeNo         string    `json:"out_trade_no"`                   // 商户订单号
-	RetryFlag          string    `json:"retry_flag"`                     // 是否需要重试
-	Action             string    `json:"action"`                         // 本次撤销触发的交易动作
-	GmtRefundPay       time.Time `json:"gmt_refund_pay,omitempty"`       // 返回的退款时间
-	RefundSettlementId string    `json:"refund_settlement_id,omitempty"` // 返回的退款清算编号
+	TradeNo            string `json:"trade_no"`                       // 支付宝交易号
+	OutTradeNo         string `json:"out_trade_no"`                   // 商户订单号
+	RetryFlag          string `json:"retry_flag"`                     // 是否需要重试
+	Action             string `json:"action"`                         // 本次撤销触发的交易动作
+	GmtRefundPay       string `json:"gmt_refund_pay,omitempty"`       // 返回的退款时间
+	RefundSettlementId string `json:"refund_settlement_id,omitempty"` // 返回的退款清算编号
 }
 
 type CancelTradeResponseModel struct {
