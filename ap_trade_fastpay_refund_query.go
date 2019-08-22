@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // 统一收单交易退款查询接口
@@ -40,7 +39,7 @@ type RefundQueryTradeResponse struct {
 	TotalAmount           string              `json:"total_amount,omitempty"`                    // 订单总金额
 	RefundAmount          string              `json:"refund_amount,omitempty"`                   // 退款总金额
 	RefundRoyaltys        []RefundRoyaltyInfo `json:"refund_royaltys,omitempty"`                 // 退分账明细信息
-	GmtRefundPay          time.Time           `json:"gmt_refund_pay,omitempty"`                  // 退款支付时间
+	GmtRefundPay          string              `json:"gmt_refund_pay,omitempty"`                  // 退款支付时间
 	FundBillList          []FundBillListInfo  `json:"refund_detail_item_list,omitempty"`         // 退款使用的资金渠道
 	SendbackFee           string              `json:"send_back_fee,omitempty"`                   // 本次商户实际退回金额
 	RefundSettlementId    string              `json:"refund_settlement_id,omitempty"`            // 支付清算编号

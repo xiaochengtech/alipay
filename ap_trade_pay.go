@@ -36,7 +36,7 @@ type PayTradeBody struct {
 	SettleCurrency     string       `json:"settle_currency,omitempty"`      // 订单结算币种
 	DiscountAmount     float32      `json:"discountable_amount,omitempty"`  // 可打折金额
 	Body               string       `json:"body,omitempty"`                 // 对交易或商品的描述
-	GoodsDetail        []Goods      `json:"goods_detail,omitempty"`         // 订单包含的商品列表信息
+	GoodsDetail        *[]Goods     `json:"goods_detail,omitempty"`         // 订单包含的商品列表信息
 	OperatorId         string       `json:"operator_id,omitempty"`          // 商户操作员编号
 	StoreId            string       `json:"store_id,omitempty"`             // 商户门店编号
 	TerminalId         string       `json:"terminal_id,omitempty"`          // 商户机具终端编号
@@ -55,52 +55,52 @@ type PromoParam struct {
 type PayTradeResponse struct {
 	ResponseModel
 	// 响应参数
-	TradeNo             string           `json:"trade_no"`                        // 支付宝交易号
-	OutTradeNo          string           `json:"out_trade_no"`                    // 商户订单号
-	BuyerLogonId        string           `json:"buyer_logon_id"`                  // 买家支付宝账号
-	SettleAmount        string           `json:"settle_amount,omitempty"`         // 结算币种订单金额
-	PayCurrency         string           `json:"pay_currency,omitempty"`          // 订单支付币种
-	PayAmount           string           `json:"pay_amount,omitempty"`            // 支付币种订单金额
-	SettleTransRate     string           `json:"settle_trans_rate,omitempty"`     // 结算币种兑换标价币种汇率
-	TransPayRate        string           `json:"trans_pay_rate,omitempty"`        // 标价币种兑换支付币种汇率
-	TotalAmount         string           `json:"total_amount"`                    // 订单总金额
-	TransCurrency       string           `json:"trans_currency,omitempty"`        // 标价币种
-	SettleCurrency      string           `json:"settle_currency,omitempty"`       // 订单结算币种
-	ReceiptAmount       string           `json:"receipt_amount"`                  // 实收金额
-	BuyerPayAmount      string           `json:"buyer_pay_amount,omitempty"`      // 买家实付金额
-	PointAmount         string           `json:"point_amount,omitempty"`          // 积分支付的金额
-	InvoiceAmount       string           `json:"invoice_amount,omitempty"`        // 可开具发票的金额
-	GmtPayment          time.Time        `json:"gmt_payment"`                     // 交易支付时间
-	FundBillList        FundBillListInfo `json:"fund_bill_list"`                  // 交易支付使用的资金渠道
-	CardBalance         string           `json:"card_balance,omitempty"`          // 支付宝卡余额
-	StoreName           string           `json:"store_name,omitempty"`            // 请求交易支付中的商户店铺的名称
-	BuyerUserId         string           `json:"buyer_user_id"`                   // 买家在支付宝的用户id
-	DiscountGoodsDetail string           `json:"discount_goods_detail,omitempty"` // 本次交易支付所使用的单品券优惠的商品优惠信息
-	VoucherDetailList   *VoucherDetail   `json:"voucher_detail_list,omitempty"`   // 本交易支付时使用的所有优惠券信息
-	AdvanceAmount       string           `json:"advance_amount,omitempty"`        // 先享后付2.0垫资金额
-	AuthTradePayMode    string           `json:"auth_trade_pay_mode,omitempty"`   // 预授权支付模式
-	ChargeAmount        string           `json:"charge_amount,omitempty"`         // 该笔交易针对收款方的收费金额
-	ChargeFlags         string           `json:"charge_flags,omitempty"`          // 费率活动标识
-	SettlementId        string           `json:"settlement_id,omitempty"`         // 支付清算编号
-	BusinessParams      string           `json:"business_params,omitempty"`       // 商户传入业务信息
-	BuyerUserType       string           `json:"buyer_user_type,omitempty"`       // 买家用户类型
-	MdiscountAmount     string           `json:"mdiscount_amount,omitempty"`      // 商家优惠金额
-	DiscountAmount      string           `json:"discount_amount,omitempty"`       // 平台优惠金额
-	BuyerUserName       string           `json:"buyer_user_name,omitempty"`       // 买家为个人用户时为买家姓名，买家为企业用户时为企业名称
+	TradeNo             string              `json:"trade_no"`                        // 支付宝交易号
+	OutTradeNo          string              `json:"out_trade_no"`                    // 商户订单号
+	BuyerLogonId        string              `json:"buyer_logon_id"`                  // 买家支付宝账号
+	SettleAmount        string              `json:"settle_amount,omitempty"`         // 结算币种订单金额
+	PayCurrency         string              `json:"pay_currency,omitempty"`          // 订单支付币种
+	PayAmount           string              `json:"pay_amount,omitempty"`            // 支付币种订单金额
+	SettleTransRate     string              `json:"settle_trans_rate,omitempty"`     // 结算币种兑换标价币种汇率
+	TransPayRate        string              `json:"trans_pay_rate,omitempty"`        // 标价币种兑换支付币种汇率
+	TotalAmount         string              `json:"total_amount"`                    // 订单总金额
+	TransCurrency       string              `json:"trans_currency,omitempty"`        // 标价币种
+	SettleCurrency      string              `json:"settle_currency,omitempty"`       // 订单结算币种
+	ReceiptAmount       string              `json:"receipt_amount"`                  // 实收金额
+	BuyerPayAmount      string              `json:"buyer_pay_amount,omitempty"`      // 买家实付金额
+	PointAmount         string              `json:"point_amount,omitempty"`          // 积分支付的金额
+	InvoiceAmount       string              `json:"invoice_amount,omitempty"`        // 可开具发票的金额
+	GmtPayment          time.Time           `json:"gmt_payment"`                     // 交易支付时间
+	FundBillList        *[]FundBillListInfo `json:"fund_bill_list"`                  // 交易支付使用的资金渠道
+	CardBalance         string              `json:"card_balance,omitempty"`          // 支付宝卡余额
+	StoreName           string              `json:"store_name,omitempty"`            // 请求交易支付中的商户店铺的名称
+	BuyerUserId         string              `json:"buyer_user_id"`                   // 买家在支付宝的用户id
+	DiscountGoodsDetail string              `json:"discount_goods_detail,omitempty"` // 本次交易支付所使用的单品券优惠的商品优惠信息
+	VoucherDetailList   *[]VoucherDetail    `json:"voucher_detail_list,omitempty"`   // 本交易支付时使用的所有优惠券信息
+	AdvanceAmount       string              `json:"advance_amount,omitempty"`        // 先享后付2.0垫资金额
+	AuthTradePayMode    string              `json:"auth_trade_pay_mode,omitempty"`   // 预授权支付模式
+	ChargeAmount        string              `json:"charge_amount,omitempty"`         // 该笔交易针对收款方的收费金额
+	ChargeFlags         string              `json:"charge_flags,omitempty"`          // 费率活动标识
+	SettlementId        string              `json:"settlement_id,omitempty"`         // 支付清算编号
+	BusinessParams      string              `json:"business_params,omitempty"`       // 商户传入业务信息
+	BuyerUserType       string              `json:"buyer_user_type,omitempty"`       // 买家用户类型
+	MdiscountAmount     string              `json:"mdiscount_amount,omitempty"`      // 商家优惠金额
+	DiscountAmount      string              `json:"discount_amount,omitempty"`       // 平台优惠金额
+	BuyerUserName       string              `json:"buyer_user_name,omitempty"`       // 买家为个人用户时为买家姓名，买家为企业用户时为企业名称
 }
 
 type VoucherDetail struct {
-	Id                         string `json:"id"`                           // 券id
-	Name                       string `json:"name"`                         // 券名称
-	Type                       string `json:"type"`                         // 券类型
-	Amount                     string `json:"amount"`                       // 优惠券面额
-	MerchantContribute         string `json:"merchant_contribute"`          // 商家出资金额
-	OtherContribute            string `json:"other_contribute"`             // 其他出资方出资金额
-	Memo                       string `json:"memo"`                         // 优惠券备注信息
-	TemplateId                 string `json:"template_id"`                  // 券模板id
-	PurchaseBuyerContribute    string `json:"purchase_buyer_contribute"`    // 用户实际付款的金额
-	PurchaseMerchantContribute string `json:"purchase_merchant_contribute"` // 商户优惠的金额
-	PurchaseMAntContribute     string `json:"purchase_ant_contribute"`      // 平台优惠的金额
+	Id                         string `json:"id"`                                     // 券id
+	Name                       string `json:"name"`                                   // 券名称
+	Type                       string `json:"type"`                                   // 券类型
+	Amount                     string `json:"amount"`                                 // 优惠券面额
+	MerchantContribute         string `json:"merchant_contribute,omitempty"`          // 商家出资金额
+	OtherContribute            string `json:"other_contribute,omitempty"`             // 其他出资方出资金额
+	Memo                       string `json:"memo,omitempty"`                         // 优惠券备注信息
+	TemplateId                 string `json:"template_id,omitempty"`                  // 券模板id
+	PurchaseBuyerContribute    string `json:"purchase_buyer_contribute,omitempty"`    // 用户实际付款的金额
+	PurchaseMerchantContribute string `json:"purchase_merchant_contribute,omitempty"` // 商户优惠的金额
+	PurchaseMAntContribute     string `json:"purchase_ant_contribute,omitempty"`      // 平台优惠的金额
 }
 
 type PayTradeResponseModel struct {

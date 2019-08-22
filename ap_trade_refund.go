@@ -2,7 +2,6 @@ package alipay
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // 统一收单交易退款接口
@@ -29,7 +28,7 @@ type RefundTradeBody struct {
 	RefundAmount            float32            `json:"refund_amount"`                       // 退款金额
 	RefundCurrency          string             `json:"refund_currency,omitempty"`           // 退款币种
 	RefundReason            string             `json:"refund_reason,omitempty"`             // 退款的原因说明
-	OutRequestNo            float32            `json:"out_request_no,omitempty"`            // 标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
+	OutRequestNo            string             `json:"out_request_no,omitempty"`            // 标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
 	OperatorId              string             `json:"operator_id,omitempty"`               // 商户操作员编号
 	StoreId                 string             `json:"store_id,omitempty"`                  // 商户门店编号
 	TerminalId              string             `json:"terminal_id,omitempty"`               // 商户机具终端编号
@@ -58,7 +57,7 @@ type RefundTradeResponse struct {
 	FundChange            string             `json:"fund_change"`                               // 本次退款是否发生了资金变化
 	RefundFee             string             `json:"refund_fee"`                                // 退款总金额
 	RefundCurrency        string             `json:"refund_currency,omitempty"`                 // 退款币种信息
-	GmtRefundPay          time.Time          `json:"gmt_refund_pay"`                            // 退款支付时间
+	GmtRefundPay          string             `json:"gmt_refund_pay"`                            // 退款支付时间
 	FundBillList          []FundBillListInfo `json:"refund_detail_item_list,omitempty"`         // 退款使用的资金渠道
 	StoreName             string             `json:"store_name,omitempty"`                      // 请求交易支付中的商户店铺的名称
 	BuyerUserId           string             `json:"buyer_user_id"`                             // 买家在支付宝的用户id
@@ -70,8 +69,8 @@ type RefundTradeResponse struct {
 }
 
 type PresetPayToolInfo struct {
-	Amount         []float32 `json:"amount"`           // 前置资产金额
-	AssertTypeCode string    `json:"assert_type_code"` // 前置资产类型编码
+	Amount         []string `json:"amount"`           // 前置资产金额
+	AssertTypeCode string   `json:"assert_type_code"` // 前置资产类型编码
 
 }
 

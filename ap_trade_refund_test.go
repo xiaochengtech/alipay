@@ -9,7 +9,7 @@ func TestRefundTrade(t *testing.T) {
 	fmt.Println("----------统一收单交易退款接口----------")
 	// 初始化参数
 	body := RefundTradeBody{}
-	body.OutTradeNo = "GYWX201908211440355706100456"
+	body.OutTradeNo = "GYWX201908221240350111"
 	body.RefundAmount = 0.01
 
 	// 请求支付

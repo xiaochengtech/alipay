@@ -7,7 +7,7 @@ import (
 // 统一收单交易创建接口，对应pay接口支付
 func (c *Client) CreateTrade(body CreateTradeBody) (aliRsp CreateTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.create", body, params, true)
+	bytes, err := c.doAliPay("alipay.trade.create", body, params, false)
 	if err != nil {
 		return
 	}
