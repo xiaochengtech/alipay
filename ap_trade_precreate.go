@@ -11,7 +11,7 @@ func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliR
 	if len(notifyUrl) > 0 {
 		params["notify_url"] = notifyUrl
 	}
-	bytes, err := c.doAliPay("alipay.trade.precreate", body, params, true)
+	bytes, err := c.doAliPay("alipay.trade.precreate", body, params, false)
 	if err != nil {
 		return
 	}
