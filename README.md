@@ -1,6 +1,5 @@
 # alipay
 
-[![Build Status](https://travis-ci.org/cuckoopark/alipay.svg?branch=master)](https://travis-ci.org/cuckoopark/alipay)
 [![Latest Tag](https://img.shields.io/github/tag/cuckoopark/alipay.svg)](https://github.com/cuckoopark/alipay/releases/latest)
 
 ### 安装
