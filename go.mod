@@ -1,4 +1,4 @@
-module github.com/cuckoopark/alipay
+module gitee.com/cuckoopark/alipay
 
 go 1.12
 

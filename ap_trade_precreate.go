@@ -19,9 +19,6 @@ func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliR
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	/* if err = c.verifySignSync(response.Data, response.Sign); err != nil {
-		return
-	} */
 	aliRsp = response.Data
 	return
 }

@@ -1,14 +1,14 @@
 # alipay
 
-[![Latest Tag](https://img.shields.io/github/tag/cuckoopark/alipay.svg)](https://github.com/cuckoopark/alipay/releases/latest)
+[![Latest Tag](https://img.shields.io/badge/tag-v0.1.0-blue.svg)](https://gitee.com/cuckoopark/alipay/releases)
 
 ### 安装
 
 ```shell
-go get -u github.com/cuckoopark/alipay
+go get -u gitee.com/cuckoopark/alipay
 ```
 
-## 支付宝支付
+### 支付宝支付
 
 * 手机网站支付：client.AliPayTradeWapPay()
 * APP支付：client.AliPayTradeAppPay()
@@ -18,7 +18,7 @@ go get -u github.com/cuckoopark/alipay
 * 统一收单交易关闭接口：client.AliPayTradeClose()
 * 统一收单交易撤销接口：client.AliPayTradeCancel()
 
-## 支付宝公共API
+### 支付宝公共API
 
 * gopay.FormatPrivateKey() => 格式化应用私钥
 * gopay.FormatAliPayPublicKey() => 格式化支付宝公钥

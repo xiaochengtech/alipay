@@ -15,9 +15,6 @@ func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	/* if err = c.verifySignSync(response.Data, response.Sign); err != nil {
-		return
-	} */
 	aliRsp = response.Data
 	return
 }

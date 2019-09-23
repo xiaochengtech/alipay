@@ -15,9 +15,6 @@ func (c *Client) CancelTrade(body CancelTradeBody) (aliRsp CancelTradeResponse, 
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	/* if err = c.verifySignSync(response.Data, response.Sign); err != nil {
-		return
-	} */
 	aliRsp = response.Data
 	return
 }

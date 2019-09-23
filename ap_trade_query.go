@@ -15,9 +15,6 @@ func (c *Client) QueryTrade(body QueryTradeBody) (aliRsp QueryTradeResponse, err
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	/* if err = c.verifySign(response.Data, response.Sign); err != nil {
-		return
-	} */
 	aliRsp = response.Data
 	return
 }
