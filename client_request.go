@@ -3,6 +3,7 @@ package alipay
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -10,6 +11,52 @@ import (
 
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
+
+var client *http.Client
+
+func init() {
+	client = &http.Client{
+		Timeout: 30 * time.Second,
+		Transport: &http.Transport{
+			IdleConnTimeout:     3 * time.Minute,
+			TLSHandshakeTimeout: 10 * time.Second,
+			DialContext: (&net.Dialer{
+				Timeout:   30 * time.Second,
+				KeepAlive: 10 * time.Minute,
+				DualStack: true,
+			}).DialContext,
+		},
+	}
+}
+
+// 向支付宝发送请求
+func (c *Client) doAliPay(method string, body interface{}, params BodyMap, isGBK bool) (bytes []byte, err error) {
+	// 获取请求参数
+	urlParam, err := c.doGenerateParams(method, body, params)
+	if err != nil {
+		return
+	}
+	// 发起请求
+	var url string
+	if c.isProd {
+		url = baseUrl
+	} else {
+		url = baseUrlSandbox
+	}
+	resp, err := client.Post(url, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	bytes, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	if isGBK {
+		bytes, err = simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
+	}
+	return
+}
 
 // 生成请求参数
 func (c *Client) doGenerateParams(method string, body interface{}, params BodyMap) (urlParam string, err error) {
@@ -58,35 +105,6 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 	params["sign"] = sign
 	// 格式化请求URL参数
 	urlParam = c.FormatURLParam(params)
-	return
-}
-
-// 向支付宝发送请求
-func (c *Client) doAliPay(method string, body interface{}, params BodyMap, isGBK bool) (bytes []byte, err error) {
-	// 获取请求参数
-	urlParam, err := c.doGenerateParams(method, body, params)
-	if err != nil {
-		return
-	}
-	// 发起请求
-	var url string
-	if c.isProd {
-		url = baseUrl
-	} else {
-		url = baseUrlSandbox
-	}
-	resp, err := http.Post(url, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
-	if err != nil {
-		return
-	}
-	defer resp.Body.Close()
-	bytes, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	if isGBK {
-		bytes, err = simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
-	}
 	return
 }
 
