@@ -5,6 +5,12 @@ import (
 	"testing"
 )
 
+func TestAuthcode(t *testing.T) {
+	code := "30763443825664394"
+	ok := IsValidAuthCode(code)
+	t.Logf("%s is : %v", code, ok)
+}
+
 func TestPayTrade(t *testing.T) {
 	fmt.Println("----------统一收单交易支付接口----------")
 	// 初始化参数
