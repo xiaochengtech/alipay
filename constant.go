@@ -52,4 +52,12 @@ const (
 	OrderBizStatusComplete = "COMPLETE" // 同步用户已履约
 	OrderBizStatusClosed   = "CLOSED"   // 同步履约已取消
 	OrderBizStatusViolated = "VIOLATED" // 用户已违约
+
+	ResponseCodeSuccess             = "10000" // 调用成功
+	ResponseCodeServiceNotAvaliable = "20000" // 服务不可用
+	ResponseCodeNotAuthrise         = "20001" // 授权权限不足
+	ResponseCodeLessParameters      = "40001" // 缺少必选参数
+	ResponseCodeInvalidParameters   = "40002" // 非法的参数
+	ResponseCodeFailure             = "40004" // 业务处理失败
+	ResponseCodePermissionDeny      = "40006" // 权限不足
 )
