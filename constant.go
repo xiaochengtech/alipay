@@ -21,6 +21,10 @@ const (
 	// 版本号
 	Version1 = "1.0" // 1.0版本
 
+	// 授权类型
+	GrantTypeAuthorizationCode = "authorization_code" // 用code获取
+	GrantTypeRefreshToken      = "refresh_token"      // 用refresh_token获取
+
 	// 货币类型
 	FeeTypeCNY = "CNY" // 人民币
 
