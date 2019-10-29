@@ -11,7 +11,7 @@ func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp Cre
 	if len(notifyUrl) > 0 {
 		params["notify_url"] = notifyUrl
 	}
-	bytes, err := c.doAliPay("alipay.trade.create", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.create", body, params, false, true)
 	if err != nil {
 		return
 	}

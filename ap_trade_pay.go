@@ -7,7 +7,7 @@ import (
 // 统一收单交易支付接口
 func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.pay", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.pay", body, params, false, true)
 	if err != nil {
 		return
 	}

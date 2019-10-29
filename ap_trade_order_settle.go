@@ -7,7 +7,7 @@ import (
 // 统一收单交易结算接口
 func (c *Client) OrderSettleTrade(body OrderSettleTradeBody) (aliRsp OrderSettleTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.order.settle", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.order.settle", body, params, false, true)
 	if err != nil {
 		return
 	}

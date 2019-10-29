@@ -7,7 +7,7 @@ import (
 // 统一收单线下交易查询接口
 func (c *Client) QueryTrade(body QueryTradeBody) (aliRsp QueryTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.query", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.query", body, params, false, true)
 	if err != nil {
 		return
 	}

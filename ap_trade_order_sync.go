@@ -7,7 +7,7 @@ import (
 // 支付宝订单信息同步接口
 func (c *Client) OrderSyncTrade(body OrderSyncTradeBody) (aliRsp OrderSyncTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.orderinfo.sync", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.orderinfo.sync", body, params, false, true)
 	if err != nil {
 		return
 	}

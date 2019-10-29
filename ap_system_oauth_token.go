@@ -8,7 +8,7 @@ import (
 // https://docs.open.alipay.com/api_9/alipay.system.oauth.token
 func (c *Client) SystemOAuthToken(body SystemOAuthTokenBody) (aliRsp SystemOAuthTokenResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.system.oauth.token", body, params, false)
+	bytes, err := c.doAlipay("alipay.system.oauth.token", body, params, false, false)
 	if err != nil {
 		return
 	}

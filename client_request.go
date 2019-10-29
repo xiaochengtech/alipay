@@ -2,6 +2,7 @@ package alipay
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -29,21 +30,29 @@ func init() {
 	}
 }
 
-// 向支付宝发送请求
-func (c *Client) doAliPay(method string, body interface{}, params BodyMap, isGBK bool) (bytes []byte, err error) {
+// 向支付宝发送Post请求
+func (c *Client) doAlipay(method string, body interface{}, params BodyMap, isGBK bool, isPost bool) (bytes []byte, err error) {
 	// 获取请求参数
-	urlParam, err := c.doGenerateParams(method, body, params)
+	urlParam, err := c.doParams(method, body, params, isPost)
 	if err != nil {
 		return
 	}
 	// 发起请求
-	var url string
+	var (
+		reqUrl string
+		resp   *http.Response
+	)
 	if c.isProd {
-		url = baseUrl
+		reqUrl = baseUrl
 	} else {
-		url = baseUrlSandbox
+		reqUrl = baseUrlSandbox
 	}
-	resp, err := client.Post(url, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
+	if isPost {
+		resp, err = client.Post(reqUrl, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
+	} else {
+		reqUrl = fmt.Sprintf("%s?%s", reqUrl, urlParam)
+		resp, err = client.Get(reqUrl)
+	}
 	if err != nil {
 		return
 	}
@@ -59,12 +68,7 @@ func (c *Client) doAliPay(method string, body interface{}, params BodyMap, isGBK
 }
 
 // 生成请求参数
-func (c *Client) doGenerateParams(method string, body interface{}, params BodyMap) (urlParam string, err error) {
-	// 将Body参数转换为JSON字符串
-	bodyStr, err := json.Marshal(body)
-	if err != nil {
-		return
-	}
+func (c *Client) doParams(method string, body interface{}, params BodyMap, isPost bool) (urlParam string, err error) {
 	// 生成公共请求参数
 	// notify_url按需提前传入至params
 	params["app_id"] = c.config.AppId
@@ -95,7 +99,22 @@ func (c *Client) doGenerateParams(method string, body interface{}, params BodyMa
 	if c.config.AppAuthToken != "" {
 		params["app_auth_token"] = c.config.AppAuthToken
 	}
-	params["biz_content"] = string(bodyStr)
+	// 将Body参数转换为JSON字符串
+	bodyStr, err := json.Marshal(body)
+	if err != nil {
+		return
+	}
+	if isPost {
+		params["biz_content"] = string(bodyStr)
+	} else {
+		var bodyParams BodyMap
+		if err = json.Unmarshal(bodyStr, &bodyParams); err != nil {
+			return
+		}
+		for k, v := range bodyParams {
+			params[k] = v
+		}
+	}
 	// 获取签名
 	pKey := c.FormatPrivateKey(c.privateKey)
 	sign, err := c.getSign(params, signType, pKey)

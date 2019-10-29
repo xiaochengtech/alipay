@@ -7,7 +7,7 @@ import (
 // 统一收单交易关闭接口
 func (c *Client) CloseTrade(body CloseTradeBody) (aliRsp CloseTradeResponse, err error) {
 	params := BodyMap{}
-	bytes, err := c.doAliPay("alipay.trade.close", body, params, false)
+	bytes, err := c.doAlipay("alipay.trade.close", body, params, false, true)
 	if err != nil {
 		return
 	}
