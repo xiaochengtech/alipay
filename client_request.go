@@ -2,15 +2,12 @@ package alipay
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
 var client *http.Client
@@ -31,9 +28,9 @@ func init() {
 }
 
 // 向支付宝发送Post请求
-func (c *Client) doAlipay(method string, body interface{}, params BodyMap, isGBK bool, isPost bool) (bytes []byte, err error) {
+func (c *Client) doAlipay(method string, params BodyMap) (bytes []byte, err error) {
 	// 获取请求参数
-	urlParam, err := c.doParams(method, body, params, isPost)
+	urlParam, err := c.doParams(method, params)
 	if err != nil {
 		return
 	}
@@ -47,28 +44,17 @@ func (c *Client) doAlipay(method string, body interface{}, params BodyMap, isGBK
 	} else {
 		reqUrl = baseUrlSandbox
 	}
-	if isPost {
-		resp, err = client.Post(reqUrl, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
-	} else {
-		reqUrl = fmt.Sprintf("%s?%s", reqUrl, urlParam)
-		resp, err = client.Get(reqUrl)
-	}
+	resp, err = client.Post(reqUrl, "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(urlParam))
 	if err != nil {
 		return
 	}
 	defer resp.Body.Close()
 	bytes, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	if isGBK {
-		bytes, err = simplifiedchinese.GBK.NewDecoder().Bytes(bytes)
-	}
 	return
 }
 
 // 生成请求参数
-func (c *Client) doParams(method string, body interface{}, params BodyMap, isPost bool) (urlParam string, err error) {
+func (c *Client) doParams(method string, params BodyMap) (urlParam string, err error) {
 	// 生成公共请求参数
 	// notify_url按需提前传入至params
 	params["app_id"] = c.config.AppId
@@ -99,22 +85,6 @@ func (c *Client) doParams(method string, body interface{}, params BodyMap, isPos
 	if c.config.AppAuthToken != "" {
 		params["app_auth_token"] = c.config.AppAuthToken
 	}
-	// 将Body参数转换为JSON字符串
-	bodyStr, err := json.Marshal(body)
-	if err != nil {
-		return
-	}
-	if isPost {
-		params["biz_content"] = string(bodyStr)
-	} else {
-		var bodyParams BodyMap
-		if err = json.Unmarshal(bodyStr, &bodyParams); err != nil {
-			return
-		}
-		for k, v := range bodyParams {
-			params[k] = v
-		}
-	}
 	// 获取签名
 	pKey := c.FormatPrivateKey(c.privateKey)
 	sign, err := c.getSign(params, signType, pKey)
@@ -127,6 +97,12 @@ func (c *Client) doParams(method string, body interface{}, params BodyMap, isPos
 	return
 }
 
+// 生成业务字段
+func (c *Client) GenerateBizContent(body interface{}) string {
+	bodyStr, _ := json.Marshal(body)
+	return string(bodyStr)
+}
+
 // 格式化请求URL参数
 func (c *Client) FormatURLParam(body BodyMap) string {
 	v := url.Values{}
@@ -134,4 +110,11 @@ func (c *Client) FormatURLParam(body BodyMap) string {
 		v.Add(key, value.(string))
 	}
 	return v.Encode()
+}
+
+// 生成到BodyMap中
+func (c *Client) ConvertToBodyMap(params interface{}) (body BodyMap) {
+	paramStr, _ := json.Marshal(params)
+	_ = json.Unmarshal(paramStr, &body)
+	return
 }

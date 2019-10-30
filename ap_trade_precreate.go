@@ -6,12 +6,14 @@ import (
 
 // 统一收单交易预创接口，支付动作在支付宝内完成，根据传入的通知地址异步通知服务商（推荐），
 func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliRsp PreCreateTradeResponse, err error) {
-	params := BodyMap{}
+	params := BodyMap{
+		"biz_content": c.GenerateBizContent(body),
+	}
 	// 按需设置公共请求参数
 	if len(notifyUrl) > 0 {
 		params["notify_url"] = notifyUrl
 	}
-	bytes, err := c.doAlipay("alipay.trade.precreate", body, params, false, true)
+	bytes, err := c.doAlipay("alipay.trade.precreate", params)
 	if err != nil {
 		return
 	}

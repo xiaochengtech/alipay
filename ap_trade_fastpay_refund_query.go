@@ -6,8 +6,10 @@ import (
 
 // 统一收单交易退款查询接口
 func (c *Client) RefundQueryTrade(body RefundQueryTradeBody) (aliRsp RefundQueryTradeResponse, err error) {
-	params := BodyMap{}
-	bytes, err := c.doAlipay("alipay.trade.fastpay.refund.query", body, params, false, true)
+	params := BodyMap{
+		"biz_content": c.GenerateBizContent(body),
+	}
+	bytes, err := c.doAlipay("alipay.trade.fastpay.refund.query", params)
 	if err != nil {
 		return
 	}

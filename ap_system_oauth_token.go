@@ -7,8 +7,8 @@ import (
 // 换取授权访问令牌接口
 // https://docs.open.alipay.com/api_9/alipay.system.oauth.token
 func (c *Client) SystemOAuthToken(body SystemOAuthTokenBody) (aliRsp SystemOAuthTokenResponse, err error) {
-	params := BodyMap{}
-	bytes, err := c.doAlipay("alipay.system.oauth.token", body, params, false, false)
+	params := c.ConvertToBodyMap(body)
+	bytes, err := c.doAlipay("alipay.system.oauth.token", params)
 	if err != nil {
 		return
 	}

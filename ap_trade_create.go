@@ -6,12 +6,14 @@ import (
 
 // 统一收单交易创建接口，对应pay接口支付
 func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp CreateTradeResponse, err error) {
-	params := BodyMap{}
+	params := BodyMap{
+		"biz_content": c.GenerateBizContent(body),
+	}
 	// 按需设置公共请求参数
 	if len(notifyUrl) > 0 {
 		params["notify_url"] = notifyUrl
 	}
-	bytes, err := c.doAlipay("alipay.trade.create", body, params, false, true)
+	bytes, err := c.doAlipay("alipay.trade.create", params)
 	if err != nil {
 		return
 	}

@@ -6,8 +6,10 @@ import (
 
 // 统一收单交易撤销接口
 func (c *Client) CancelTrade(body CancelTradeBody) (aliRsp CancelTradeResponse, err error) {
-	params := BodyMap{}
-	bytes, err := c.doAlipay("alipay.trade.cancel", body, params, false, true)
+	params := BodyMap{
+		"biz_content": c.GenerateBizContent(body),
+	}
+	bytes, err := c.doAlipay("alipay.trade.cancel", params)
 	if err != nil {
 		return
 	}

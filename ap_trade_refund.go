@@ -6,8 +6,10 @@ import (
 
 // 统一收单交易退款接口
 func (c *Client) RefundTrade(body RefundTradeBody) (aliRsp RefundTradeResponse, err error) {
-	params := BodyMap{}
-	bytes, err := c.doAlipay("alipay.trade.refund", body, params, false, true)
+	params := BodyMap{
+		"biz_content": c.GenerateBizContent(body),
+	}
+	bytes, err := c.doAlipay("alipay.trade.refund", params)
 	if err != nil {
 		return
 	}
