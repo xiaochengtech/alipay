@@ -31,9 +31,9 @@ type SystemOAuthTokenResponse struct {
 	// 响应参数
 	UserId       string `json:"user_id"`       // 支付宝用户的唯一userId，2088102150477652
 	AccessToken  string `json:"access_token"`  // 访问令牌。通过该令牌调用需要授权类接口，20120823ac6ffaa4d2d84e7384bf983531473993
-	ExpiresIn    string `json:"expires_in"`    // 访问令牌的有效时间，单位是秒。3600
+	ExpiresIn    int64  `json:"expires_in"`    // 访问令牌的有效时间，单位是秒。3600
 	RefreshToken string `json:"refresh_token"` // 刷新令牌。通过该令牌可以刷新access_token，20120823ac6ffdsdf2d84e7384bf983531473993
-	ReExpiresIn  string `json:"re_expires_in"` // 刷新令牌的有效时间，单位是秒。3600
+	ReExpiresIn  int64  `json:"re_expires_in"` // 刷新令牌的有效时间，单位是秒。3600
 }
 
 type SystemOAuthTokenResponseModel struct {

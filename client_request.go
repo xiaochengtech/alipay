@@ -67,7 +67,7 @@ func (c *Client) doParams(method string, params BodyMap) (urlParam string, err e
 	if c.config.Charset != "" {
 		params["charset"] = c.config.Charset
 	} else {
-		params["charset"] = "utf-8"
+		params["charset"] = CharSetUTF8
 	}
 	var signType string
 	if c.config.SignType != "" {
