@@ -12,11 +12,13 @@ func (c *Client) SystemOAuthToken(body SystemOAuthTokenBody) (aliRsp SystemOAuth
 	if err != nil {
 		return
 	}
+
 	var response SystemOAuthTokenResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-	aliRsp = response.Data
+
+	aliRsp = response.SystemOAuthTokenResponse
 	return
 }
 
@@ -26,9 +28,7 @@ type SystemOAuthTokenBody struct {
 	RefreshToken string `json:"refresh_token,omitempty"` // 刷刷新令牌，上次换取访问令牌时得到。见出参的refresh_token字段
 }
 
-type SystemOAuthTokenResponse struct {
-	ResponseModel
-	// 响应参数
+type SystemOAuthTokenData struct {
 	UserId       string `json:"user_id"`       // 支付宝用户的唯一userId，2088102150477652
 	AccessToken  string `json:"access_token"`  // 访问令牌。通过该令牌调用需要授权类接口，20120823ac6ffaa4d2d84e7384bf983531473993
 	ExpiresIn    int64  `json:"expires_in"`    // 访问令牌的有效时间，单位是秒。3600
@@ -36,7 +36,12 @@ type SystemOAuthTokenResponse struct {
 	ReExpiresIn  int64  `json:"re_expires_in"` // 刷新令牌的有效时间，单位是秒。3600
 }
 
+type SystemOAuthTokenResponse struct {
+	Error ResponseModel        `json:"error_response,omitempty"`
+	Data  SystemOAuthTokenData `json:"alipay_system_oauth_token_response"` // 返回值信息
+}
+
 type SystemOAuthTokenResponseModel struct {
-	Data SystemOAuthTokenResponse `json:"alipay_system_oauth_token_response"` // 返回值信息
-	Sign string                   `json:"sign"`                               // 签名，参见https://docs.open.alipay.com/291/106074
+	SystemOAuthTokenResponse
+	Sign string `json:"sign"` // 签名，参见https://docs.open.alipay.com/291/106074
 }
