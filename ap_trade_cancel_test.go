@@ -10,7 +10,6 @@ func TestCancelTrade(t *testing.T) {
 	// 初始化参数
 	body := CancelTradeBody{}
 	body.OutTradeNo = "GYWX201908221240350122"
-
 	// 请求支付
 	aliRsp, err := testClient.CancelTrade(body)
 	if err != nil {

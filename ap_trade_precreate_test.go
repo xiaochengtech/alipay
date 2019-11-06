@@ -12,7 +12,6 @@ func TestPreCreateTrade(t *testing.T) {
 	body.OutTradeNo = "ZSCS201908221300003333"
 	body.TotalAmount = 0.01
 	body.Subject = "测试车场阿里支付-停车费"
-
 	// 请求支付
 	aliRsp, err := testClient.PreCreateTrade(body, "")
 	if err != nil {

@@ -46,7 +46,6 @@ func (c *Client) getSign(body BodyMap, signType string, privateKey string) (sign
 	}
 	// 拼接原始串
 	signStr := c.sortSignParams(body)
-	//fmt.Println(signStr)
 	_, err = h.Write([]byte(signStr))
 	if err != nil {
 		return

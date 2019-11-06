@@ -10,7 +10,6 @@ func TestQueryTrade(t *testing.T) {
 	// 初始化参数
 	body := QueryTradeBody{}
 	body.OutTradeNo = "ZSCS201910301300003333"
-
 	// 请求支付
 	aliRsp, err := testClient.QueryTrade(body)
 	if err != nil {

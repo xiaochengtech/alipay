@@ -11,7 +11,6 @@ func TestRefundTrade(t *testing.T) {
 	body := RefundTradeBody{}
 	body.OutTradeNo = "ZSCS201910301300003333"
 	body.RefundAmount = 0.01
-
 	// 请求支付
 	aliRsp, err := testClient.RefundTrade(body)
 	if err != nil {

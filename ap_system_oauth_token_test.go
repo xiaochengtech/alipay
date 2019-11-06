@@ -11,7 +11,6 @@ func TestSystemOAuthToken(t *testing.T) {
 	body := SystemOAuthTokenBody{}
 	body.GrantType = "authorization_code"
 	body.Code = "GYWX201908221240350122"
-
 	// 请求支付
 	aliRsp, err := testClient.SystemOAuthToken(body)
 	if err != nil {

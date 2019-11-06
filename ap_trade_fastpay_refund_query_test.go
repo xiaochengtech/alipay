@@ -11,7 +11,6 @@ func TestRefundQueryTrade(t *testing.T) {
 	body := RefundQueryTradeBody{}
 	body.OutTradeNo = "GYWX201908221140351111"
 	body.OutRequestNo = "2019082222001485841000025596"
-
 	// 请求支付
 	aliRsp, err := testClient.RefundQueryTrade(body)
 	if err != nil {

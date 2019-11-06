@@ -12,7 +12,6 @@ func TestOrderSyncTrade(t *testing.T) {
 	body.TradeNo = "GYWX201908221240350111"
 	body.OutRequestNo = "GYWX201908221240350111"
 	body.BizType = "CREDIT_AUTH"
-
 	// 请求支付
 	aliRsp, err := testClient.OrderSyncTrade(body)
 	if err != nil {

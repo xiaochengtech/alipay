@@ -12,12 +12,10 @@ func (c *Client) SystemOAuthToken(body SystemOAuthTokenBody) (aliRsp SystemOAuth
 	if err != nil {
 		return
 	}
-
 	var response SystemOAuthTokenResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
-
 	aliRsp = response.SystemOAuthTokenResponse
 	return
 }
