@@ -14,6 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"hash"
+	"net/url"
 	"sort"
 )
 
@@ -109,7 +110,7 @@ func (c *Client) verifySignSync(data interface{}, sign string) (err error) {
 }
 
 // 验证异步返回值签名
-func (c *Client) verifySign(data interface{}, sign string) (err error) {
+func (c *Client) verifySignAyn(data interface{}, sign string) (err error) {
 	var (
 		h     hash.Hash
 		hashs crypto.Hash
@@ -121,7 +122,7 @@ func (c *Client) verifySign(data interface{}, sign string) (err error) {
 		return
 	}
 	signData := c.sortSignParams(body)
-	fmt.Println(signData)
+	//fmt.Println(signData)
 	signBytes, err := base64.StdEncoding.DecodeString(sign)
 	if err != nil {
 		return err
@@ -170,4 +171,58 @@ func (c *Client) sortSignParams(body BodyMap) string {
 	}
 	s, i := buffer.String(), buffer.Len()
 	return s[:i-1]
+}
+
+// 支付通知的验签
+func (c *Client) VerifySign(raw_url string) (err error) {
+	// 转换url对象
+	url_obj, err := url.Parse(raw_url)
+	if err != nil {
+		return
+	}
+
+	// 解析查询部分
+	query_map, err := url.ParseQuery(url_obj.RawQuery)
+	if err != nil {
+		return
+	}
+
+	// 输出
+	/* fmt.Println(url_obj.String())
+	fmt.Println()
+	fmt.Println(url_obj.RawQuery)
+	fmt.Println()
+	for k, v := range query_map {
+		fmt.Printf("%s:%v\n", k, v)
+	}
+	fmt.Println() */
+
+	// 获取回传的数字签名并排除数字签名
+	sign := ""
+	if value, ok := query_map["sign"]; ok {
+		sign = value[0]
+		delete(query_map, "sign")
+	} else {
+		err = errors.New("没有回传数字签名")
+		return
+	}
+
+	// 排除空值的对象
+	body := make(map[string]interface{})
+	for k, v := range query_map {
+		if k == "sign" {
+			continue
+		}
+		if v == nil || (len(v) == 0 && len(v[0]) == 0) {
+			continue
+		}
+		body[k] = v[0]
+	}
+	/* for k, v := range body {
+		fmt.Printf("%s:%v\n", k, v)
+	} */
+
+	// 验签
+	err = c.verifySignAyn(body, sign)
+	return
 }
