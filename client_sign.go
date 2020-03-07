@@ -14,7 +14,6 @@ import (
 	"errors"
 	"fmt"
 	"hash"
-	"net/url"
 	"sort"
 )
 
