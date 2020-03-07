@@ -1,3 +1,3 @@
-module gitee.com/cuckoopark/alipay
+module gitee.com/xiaochengtech/alipay
 
 go 1.12

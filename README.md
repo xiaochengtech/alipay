@@ -1,13 +1,5 @@
 # alipay
 
-[![Latest Tag](https://img.shields.io/badge/tag-v0.1.0-blue.svg)](https://gitee.com/cuckoopark/alipay/releases)
-
-### 安装
-
-```shell
-go get -u gitee.com/cuckoopark/alipay
-```
-
 ### 支付宝支付
 
 * 手机网站支付：client.AliPayTradeWapPay()
