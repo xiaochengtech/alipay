@@ -102,7 +102,7 @@ func (c *Client) verifySignSync(data interface{}, sign string) (err error) {
 		hash = crypto.SHA256
 	}
 	// 调用签名校验
-	h.Write(dataBytes)
+	_, _ = h.Write(dataBytes)
 	hashed := h.Sum(nil)
 	err = rsa.VerifyPKCS1v15(publicKey, hash, hashed, signBytes)
 	return
@@ -151,7 +151,7 @@ func (c *Client) verifySignAyn(data interface{}, sign string) (err error) {
 		hashs = crypto.SHA256
 	}
 	h = hashs.New()
-	h.Write([]byte(signData))
+	_, _ = h.Write([]byte(signData))
 	err = rsa.VerifyPKCS1v15(publicKey, hashs, h.Sum(nil), signBytes)
 	return
 }
