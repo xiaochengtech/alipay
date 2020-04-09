@@ -6,7 +6,7 @@ import (
 )
 
 // 支付通知的处理
-func (c *Client) NotifyPay(raw_url string) (err error) {
+func (c Client) NotifyPay(raw_url string) (err error) {
 	// 转换url对象
 	urlObj, err := url.Parse(raw_url)
 	if err != nil {

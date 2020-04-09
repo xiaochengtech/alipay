@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单线下交易查询接口
-func (c *Client) QueryTrade(body QueryTradeBody) (aliRsp QueryTradeResponse, err error) {
+func (c Client) TradeQuery(body TradeQueryBody) (aliRsp TradeQueryResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -13,7 +13,7 @@ func (c *Client) QueryTrade(body QueryTradeBody) (aliRsp QueryTradeResponse, err
 	if err != nil {
 		return
 	}
-	var response QueryTradeResponseModel
+	var response TradeQueryResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -21,14 +21,14 @@ func (c *Client) QueryTrade(body QueryTradeBody) (aliRsp QueryTradeResponse, err
 	return
 }
 
-type QueryTradeBody struct {
+type TradeQueryBody struct {
 	OutTradeNo   string   `json:"out_trade_no,omitempty"`  // 商户订单号
 	TradeNo      string   `json:"trade_no,omitempty"`      // 支付宝交易号，和商户订单号不能同时为空
 	OrgPid       string   `json:"org_pid,omitempty"`       // 交易所属收单机构的pid
 	QueryOptions []string `json:"query_options,omitempty"` // 查询选项,定制查询返回信息
 }
 
-type QueryTradeResponse struct {
+type TradeQueryResponse struct {
 	ResponseModel
 	// 响应参数
 	TradeNo          string              `json:"trade_no"`                         // 支付宝交易号
@@ -89,7 +89,7 @@ type TradeSettleDetail struct {
 	Amount            float32 `json:"amount"`                        // 实际操作金额
 }
 
-type QueryTradeResponseModel struct {
-	Data QueryTradeResponse `json:"alipay_trade_query_response"` // 返回值信息
+type TradeQueryResponseModel struct {
+	Data TradeQueryResponse `json:"alipay_trade_query_response"` // 返回值信息
 	Sign string             `json:"sign"`                        // 签名，参见https://docs.open.alipay.com/291/106074
 }

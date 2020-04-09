@@ -5,7 +5,7 @@ import (
 )
 
 // 支付宝订单信息同步接口
-func (c *Client) OrderSyncTrade(body OrderSyncTradeBody) (aliRsp OrderSyncTradeResponse, err error) {
+func (c Client) TradeOrderinfoSync(body TradeOrderinfoSyncBody) (aliRsp TradeOrderinfoSyncResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -13,7 +13,7 @@ func (c *Client) OrderSyncTrade(body OrderSyncTradeBody) (aliRsp OrderSyncTradeR
 	if err != nil {
 		return
 	}
-	var response OrderSyncTradeResponseModel
+	var response TradeOrderinfoSyncResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -21,7 +21,7 @@ func (c *Client) OrderSyncTrade(body OrderSyncTradeBody) (aliRsp OrderSyncTradeR
 	return
 }
 
-type OrderSyncTradeBody struct {
+type TradeOrderinfoSyncBody struct {
 	TradeNo       string `json:"trade_no"`                  // 支付宝订单号
 	OrigRequestNo string `json:"orig_request_no,omitempty"` // 原始业务请求单号
 	OutRequestNo  string `json:"out_request_no"`            // 标识一笔交易多次请求，同一笔交易多次信息同步时需要保证唯一
@@ -29,7 +29,7 @@ type OrderSyncTradeBody struct {
 	OrderBizInfo  string `json:"order_biz_info,omitempty"`  // 商户传入同步信息
 }
 
-type OrderSyncTradeResponse struct {
+type TradeOrderinfoSyncResponse struct {
 	ResponseModel
 	// 响应参数
 	TradeNo     string `json:"trade_no"`               // 支付宝交易号
@@ -37,7 +37,7 @@ type OrderSyncTradeResponse struct {
 	BuyerUserId string `json:"buyer_user_id"`          // 买家在支付宝的用户id
 }
 
-type OrderSyncTradeResponseModel struct {
-	Data OrderSyncTradeResponse `json:"alipay_trade_orderinfo_sync_response"` // 返回值信息
-	Sign string                 `json:"sign"`                                 // 签名，参见https://docs.open.alipay.com/291/106074
+type TradeOrderinfoSyncResponseModel struct {
+	Data TradeOrderinfoSyncResponse `json:"alipay_trade_orderinfo_sync_response"` // 返回值信息
+	Sign string                     `json:"sign"`                                 // 签名，参见https://docs.open.alipay.com/291/106074
 }

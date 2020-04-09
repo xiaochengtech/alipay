@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单交易预创接口，支付动作在支付宝内完成，根据传入的通知地址异步通知服务商（推荐），
-func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliRsp PreCreateTradeResponse, err error) {
+func (c Client) TradePrecreate(body TradePrecreateBody, notifyUrl string) (aliRsp TradePrecreateResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -17,7 +17,7 @@ func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliR
 	if err != nil {
 		return
 	}
-	var response PreCreateTradeResponseModel
+	var response TradePrecreateResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -25,7 +25,7 @@ func (c *Client) PreCreateTrade(body PreCreateTradeBody, notifyUrl string) (aliR
 	return
 }
 
-type PreCreateTradeBody struct {
+type TradePrecreateBody struct {
 	OutTradeNo           string         `json:"out_trade_no"`                      // 商户订单号，64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复
 	SellerId             string         `json:"seller_id,omitempty"`               // 卖家支付宝用户ID。如果该值为空，则默认为商户签约账号对应的支付宝用户ID
 	TotalAmount          float32        `json:"total_amount"`                      // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]
@@ -47,14 +47,14 @@ type PreCreateTradeBody struct {
 	QrCodeTimeoutExpress string         `json:"qr_code_timeout_express,omitempty"` // 该笔订单允许的最晚付款时间
 }
 
-type PreCreateTradeResponse struct {
+type TradePrecreateResponse struct {
 	ResponseModel
 	// 响应参数
 	OutTradeNo string `json:"out_trade_no"` // 商户订单号
 	QrCode     string `json:"qr_code"`      // 当前预下单请求生成的二维码码串
 }
 
-type PreCreateTradeResponseModel struct {
-	Data PreCreateTradeResponse `json:"alipay_trade_precreate_response"` // 返回值信息
+type TradePrecreateResponseModel struct {
+	Data TradePrecreateResponse `json:"alipay_trade_precreate_response"` // 返回值信息
 	Sign string                 `json:"sign"`                            // 签名，参见https://docs.open.alipay.com/291/106074
 }

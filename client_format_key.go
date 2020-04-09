@@ -3,7 +3,7 @@ package alipay
 import "bytes"
 
 // 将私钥字符串转换为RSA私钥格式
-func (c *Client) FormatPrivateKey(privateKey string) string {
+func (c Client) FormatPrivateKey(privateKey string) string {
 	buffer := new(bytes.Buffer)
 	buffer.WriteString("-----BEGIN RSA PRIVATE KEY-----\n")
 	rawLen, keyLen := 64, len(privateKey)
@@ -27,7 +27,7 @@ func (c *Client) FormatPrivateKey(privateKey string) string {
 }
 
 // 将公钥字符串转换为RSA公钥格式
-func (c *Client) FormatPublicKey(publicKey string) string {
+func (c Client) FormatPublicKey(publicKey string) string {
 	buffer := new(bytes.Buffer)
 	buffer.WriteString("-----BEGIN PUBLIC KEY-----\n")
 	rawLen, keyLen := 64, len(publicKey)

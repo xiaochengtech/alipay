@@ -6,7 +6,7 @@ import (
 
 // 换取应用授权令牌
 // https://opendocs.alipay.com/apis/api_9/alipay.open.auth.token.app
-func (c *Client) OpenAuthTokenApp(body OpenAuthTokenAppBody) (aliRsp OpenAuthTokenAppResponse, err error) {
+func (c Client) OpenAuthTokenApp(body OpenAuthTokenAppBody) (aliRsp OpenAuthTokenAppResponse, err error) {
 	params := c.ConvertToBodyMap(body)
 	bytes, err := c.doAlipay("alipay.open.auth.token.app", params)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单交易创建接口，对应pay接口支付
-func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp CreateTradeResponse, err error) {
+func (c Client) TradeCreate(body TradeCreateBody, notifyUrl string) (aliRsp TradeCreateResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -17,7 +17,7 @@ func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp Cre
 	if err != nil {
 		return
 	}
-	var response CreateTradeResponseModel
+	var response TradeCreateResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -25,7 +25,7 @@ func (c *Client) CreateTrade(body CreateTradeBody, notifyUrl string) (aliRsp Cre
 	return
 }
 
-type CreateTradeBody struct {
+type TradeCreateBody struct {
 	OutTradeNo          string           `json:"out_trade_no"`                    // 商户订单号，64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复
 	SellerId            string           `json:"seller_id,omitempty"`             // 卖家支付宝用户ID。如果该值为空，则默认为商户签约账号对应的支付宝用户ID
 	TotalAmount         float32          `json:"total_amount"`                    // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]
@@ -95,14 +95,14 @@ type ReceiverAddress struct {
 	DivisionCode string `json:"division_code,omitempty"` // 中国标准城市区域码
 }
 
-type CreateTradeResponse struct {
+type TradeCreateResponse struct {
 	ResponseModel
 	// 响应参数
 	OutTradeNo string `json:"out_trade_no"` // 商户订单号
 	TradeNo    string `json:"trade_no"`     // 支付宝交易号
 }
 
-type CreateTradeResponseModel struct {
-	Data CreateTradeResponse `json:"alipay_trade_create_response"` // 返回值信息
+type TradeCreateResponseModel struct {
+	Data TradeCreateResponse `json:"alipay_trade_create_response"` // 返回值信息
 	Sign string              `json:"sign"`                         // 签名，参见https://docs.open.alipay.com/291/106074
 }

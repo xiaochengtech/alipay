@@ -28,7 +28,7 @@ func init() {
 }
 
 // 向支付宝发送Post请求
-func (c *Client) doAlipay(method string, params BodyMap) (bytes []byte, err error) {
+func (c Client) doAlipay(method string, params BodyMap) (bytes []byte, err error) {
 	// 获取请求参数
 	urlParam, err := c.doParams(method, params)
 	if err != nil {
@@ -54,7 +54,7 @@ func (c *Client) doAlipay(method string, params BodyMap) (bytes []byte, err erro
 }
 
 // 生成请求参数
-func (c *Client) doParams(method string, params BodyMap) (urlParam string, err error) {
+func (c Client) doParams(method string, params BodyMap) (urlParam string, err error) {
 	// 生成公共请求参数
 	// notify_url按需提前传入至params
 	params["app_id"] = c.config.AppId
@@ -98,13 +98,13 @@ func (c *Client) doParams(method string, params BodyMap) (urlParam string, err e
 }
 
 // 生成业务字段
-func (c *Client) GenerateBizContent(body interface{}) string {
+func (Client) GenerateBizContent(body interface{}) string {
 	bodyStr, _ := json.Marshal(body)
 	return string(bodyStr)
 }
 
 // 格式化请求URL参数
-func (c *Client) FormatURLParam(body BodyMap) string {
+func (Client) FormatURLParam(body BodyMap) string {
 	v := url.Values{}
 	for key, value := range body {
 		v.Add(key, value.(string))
@@ -113,7 +113,7 @@ func (c *Client) FormatURLParam(body BodyMap) string {
 }
 
 // 生成到BodyMap中
-func (c *Client) ConvertToBodyMap(params interface{}) (body BodyMap) {
+func (Client) ConvertToBodyMap(params interface{}) (body BodyMap) {
 	paramStr, _ := json.Marshal(params)
 	_ = json.Unmarshal(paramStr, &body)
 	return

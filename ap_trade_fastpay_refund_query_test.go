@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestRefundQueryTrade(t *testing.T) {
+func TestTradeFastpayRefundQuery(t *testing.T) {
 	fmt.Println("----------统一收单交易退款查询接口----------")
 	// 初始化参数
-	body := RefundQueryTradeBody{}
+	body := TradeFastpayRefundQueryBody{}
 	body.OutTradeNo = "GYWX201908221140351111"
 	body.OutRequestNo = "2019082222001485841000025596"
 	// 请求支付
-	aliRsp, err := testClient.RefundQueryTrade(body)
+	aliRsp, err := testClient.TradeFastpayRefundQuery(body)
 	if err != nil {
 		t.Error(err)
 		return

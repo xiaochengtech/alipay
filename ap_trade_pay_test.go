@@ -11,17 +11,17 @@ func TestAuthcode(t *testing.T) {
 	t.Logf("%s is : %v", code, ok)
 }
 
-func TestPayTrade(t *testing.T) {
+func TestTradePay(t *testing.T) {
 	fmt.Println("----------统一收单交易支付接口----------")
 	// 初始化参数
-	body := PayTradeBody{}
+	body := TradePayBody{}
 	body.OutTradeNo = "ZSCS201910301300003333"
 	body.Scene = SceneByBar
 	body.AuthCode = "281778064797045892"
 	body.Subject = "测试车场阿里支付-停车费"
 	body.TotalAmount = 0.01
 	// 请求支付
-	aliRsp, err := testClient.PayTrade(body)
+	aliRsp, err := testClient.TradePay(body)
 	if err != nil {
 		t.Error(err)
 		return

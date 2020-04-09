@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单交易支付接口
-func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error) {
+func (c Client) TradePay(body TradePayBody) (aliRsp TradePayResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -13,7 +13,7 @@ func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error
 	if err != nil {
 		return
 	}
-	var response PayTradeResponseModel
+	var response TradePayResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -21,7 +21,7 @@ func (c *Client) PayTrade(body PayTradeBody) (aliRsp PayTradeResponse, err error
 	return
 }
 
-type PayTradeBody struct {
+type TradePayBody struct {
 	OutTradeNo         string       `json:"out_trade_no"`                   // 商户订单号，64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复
 	Scene              string       `json:"scene"`                          // 支付场景
 	AuthCode           string       `json:"auth_code"`                      // 支付授权码
@@ -50,7 +50,7 @@ type PromoParam struct {
 	ActualOrderTime string `json:"actual_order_time,omitempty"` // 存在延迟扣款这一类的场景，用这个时间表明用户发生交易的时间
 }
 
-type PayTradeResponse struct {
+type TradePayResponse struct {
 	ResponseModel
 	// 响应参数
 	TradeNo             string              `json:"trade_no"`                        // 支付宝交易号
@@ -101,7 +101,7 @@ type VoucherDetail struct {
 	PurchaseMAntContribute     string `json:"purchase_ant_contribute,omitempty"`      // 平台优惠的金额
 }
 
-type PayTradeResponseModel struct {
-	Data PayTradeResponse `json:"alipay_trade_pay_response"` // 返回值信息
+type TradePayResponseModel struct {
+	Data TradePayResponse `json:"alipay_trade_pay_response"` // 返回值信息
 	Sign string           `json:"sign"`                      // 签名，参见https://docs.open.alipay.com/291/106074
 }

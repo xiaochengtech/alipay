@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单交易退款查询接口
-func (c *Client) RefundQueryTrade(body RefundQueryTradeBody) (aliRsp RefundQueryTradeResponse, err error) {
+func (c Client) TradeFastpayRefundQuery(body TradeFastpayRefundQueryBody) (aliRsp TradeFastpayRefundQueryResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -13,7 +13,7 @@ func (c *Client) RefundQueryTrade(body RefundQueryTradeBody) (aliRsp RefundQuery
 	if err != nil {
 		return
 	}
-	var response RefundQueryTradeResponseModel
+	var response TradeFastpayRefundQueryResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -21,14 +21,14 @@ func (c *Client) RefundQueryTrade(body RefundQueryTradeBody) (aliRsp RefundQuery
 	return
 }
 
-type RefundQueryTradeBody struct {
+type TradeFastpayRefundQueryBody struct {
 	TradeNo      string `json:"trade_no,omitempty"`     // 支付宝订单号
 	OutTradeNo   string `json:"out_trade_no,omitempty"` // 商户订单号，64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复
 	OutRequestNo string `json:"out_request_no"`         // 标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
 	OrgPId       string `json:"org_pid,omitempty"`      // 退款的交易所属收单机构的pid
 }
 
-type RefundQueryTradeResponse struct {
+type TradeFastpayRefundQueryResponse struct {
 	ResponseModel
 	// 响应参数
 	TradeNo               string              `json:"trade_no,omitempty"`                        // 支付宝交易号
@@ -57,7 +57,7 @@ type RefundRoyaltyInfo struct {
 	TransInType  string `json:"trans_in_email,omitempty"`  // 转入人支付宝账号
 }
 
-type RefundQueryTradeResponseModel struct {
-	Data RefundQueryTradeResponse `json:"alipay_trade_fastpay_refund_query_response"` // 返回值信息
-	Sign string                   `json:"sign"`                                       // 签名，参见https://docs.open.alipay.com/291/106074
+type TradeFastpayRefundQueryResponseModel struct {
+	Data TradeFastpayRefundQueryResponse `json:"alipay_trade_fastpay_refund_query_response"` // 返回值信息
+	Sign string                          `json:"sign"`                                       // 签名，参见https://docs.open.alipay.com/291/106074
 }

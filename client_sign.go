@@ -18,7 +18,7 @@ import (
 )
 
 // 获取参数签名
-func (c *Client) getSign(body BodyMap, signType string, privateKey string) (sign string, err error) {
+func (c Client) getSign(body BodyMap, signType string, privateKey string) (sign string, err error) {
 	var (
 		h     hash.Hash
 		hashs crypto.Hash
@@ -61,7 +61,7 @@ func (c *Client) getSign(body BodyMap, signType string, privateKey string) (sign
 }
 
 // 验证同步返回值签名
-func (c *Client) verifySignSync(data interface{}, sign string) (err error) {
+func (c Client) verifySignSync(data interface{}, sign string) (err error) {
 	var (
 		h    hash.Hash
 		hash crypto.Hash
@@ -109,7 +109,7 @@ func (c *Client) verifySignSync(data interface{}, sign string) (err error) {
 }
 
 // 验证异步返回值签名
-func (c *Client) verifySignAyn(data interface{}, sign string) (err error) {
+func (c Client) verifySignAyn(data interface{}, sign string) (err error) {
 	var (
 		h     hash.Hash
 		hashs crypto.Hash
@@ -157,7 +157,7 @@ func (c *Client) verifySignAyn(data interface{}, sign string) (err error) {
 }
 
 // 获取根据Key排序后的请求参数字符串
-func (c *Client) sortSignParams(body BodyMap) string {
+func (c Client) sortSignParams(body BodyMap) string {
 	keyList := make([]string, 0)
 	for k := range body {
 		keyList = append(keyList, k)

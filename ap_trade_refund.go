@@ -5,7 +5,7 @@ import (
 )
 
 // 统一收单交易退款接口
-func (c *Client) RefundTrade(body RefundTradeBody) (aliRsp RefundTradeResponse, err error) {
+func (c Client) TradeRefund(body TradeRefundBody) (aliRsp TradeRefundResponse, err error) {
 	params := BodyMap{
 		"biz_content": c.GenerateBizContent(body),
 	}
@@ -13,7 +13,7 @@ func (c *Client) RefundTrade(body RefundTradeBody) (aliRsp RefundTradeResponse, 
 	if err != nil {
 		return
 	}
-	var response RefundTradeResponseModel
+	var response TradeRefundResponseModel
 	if err = json.Unmarshal(bytes, &response); err != nil {
 		return
 	}
@@ -21,7 +21,7 @@ func (c *Client) RefundTrade(body RefundTradeBody) (aliRsp RefundTradeResponse, 
 	return
 }
 
-type RefundTradeBody struct {
+type TradeRefundBody struct {
 	OutTradeNo              string             `json:"out_trade_no,omitempty"`              // 商户订单号，64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复
 	TradeNo                 string             `json:"trade_no,omitempty"`                  // 支付宝订单号
 	RefundAmount            float32            `json:"refund_amount"`                       // 退款金额
@@ -47,7 +47,7 @@ type RoyaltyParameter struct {
 	Desc             string  `json:"desc,omitempty"`              // 分账描述
 }
 
-type RefundTradeResponse struct {
+type TradeRefundResponse struct {
 	ResponseModel
 	// 响应参数
 	TradeNo               string             `json:"trade_no"`                                  // 支付宝交易号
@@ -73,7 +73,7 @@ type PresetPayToolInfo struct {
 
 }
 
-type RefundTradeResponseModel struct {
-	Data RefundTradeResponse `json:"alipay_trade_refund_response"` // 返回值信息
+type TradeRefundResponseModel struct {
+	Data TradeRefundResponse `json:"alipay_trade_refund_response"` // 返回值信息
 	Sign string              `json:"sign"`                         // 签名，参见https://docs.open.alipay.com/291/106074
 }
