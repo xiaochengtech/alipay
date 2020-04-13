@@ -13,7 +13,7 @@ var (
 )
 
 //  测试用客户端
-var testClient = NewClient(true, AliPublicKey, AliPrivateKey, Config{
+var testClient = NewClient(false, AliPublicKey, AliPrivateKey, Config{
 	AppId:        AliAppId,
 	Format:       FormatJson,
 	Charset:      CharSetUTF8,
