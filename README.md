@@ -123,3 +123,4 @@ func Test() {
 
 * 开放平台文档-API清单：[https://opendocs.alipay.com/apis](https://opendocs.alipay.com/apis)
 * 网页&移动应用-第三方应用授权：[https://opendocs.alipay.com/open/20160728150111277227/intro](https://opendocs.alipay.com/open/20160728150111277227/intro)
+* 沙箱账号：[https://openhome.alipay.com/platform/appDaily.htm](https://openhome.alipay.com/platform/appDaily.htm)
