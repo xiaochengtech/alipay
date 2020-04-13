@@ -1,9 +1,5 @@
 package alipay
 
-import (
-	"os"
-)
-
 type Client struct {
 	config     Config // 配置信息
 	publicKey  string // 支付宝公钥
@@ -20,13 +16,3 @@ func NewClient(isProd bool, publicKey string, privateKey string, config Config) 
 	client.isProd = isProd
 	return client
 }
-
-//  测试用客户端
-var testClient = NewClient(true, os.Getenv("AliPublicKey"), os.Getenv("AliPrivateKey"), Config{
-	AppId:        os.Getenv("AliAppId"), //appIdSandbox,
-	Format:       FormatJson,
-	Charset:      CharSetUTF8,
-	SignType:     SignTypeRSA2,
-	Version:      Version1,
-	AppAuthToken: os.Getenv("AliAppAuthToken"),
-})
