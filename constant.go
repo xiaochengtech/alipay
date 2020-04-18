@@ -28,6 +28,12 @@ const (
 	// 货币类型
 	FeeTypeCNY = "CNY" // 人民币
 
+	// 回调通知类型
+	NotifyTypeTradeStatusSync = "trade_status_sync" // 交易状态通知
+
+	// 回调中的交易状态
+	TradeStatusSuccess = "TRADE_SUCCESS" // 交易成功
+
 	TransInTypeCard  = "cardAliasNo" // 结算收款方的银行卡编号
 	TransInTypeUser  = "userId"      // 表示是支付宝账号对应的支付宝唯一用户号
 	TransInTypeLogin = "loginName"   // 表示是支付宝登录号
