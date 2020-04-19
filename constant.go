@@ -32,7 +32,10 @@ const (
 	NotifyTypeTradeStatusSync = "trade_status_sync" // 交易状态通知
 
 	// 回调中的交易状态
-	TradeStatusSuccess = "TRADE_SUCCESS" // 交易成功
+	TradeStatusClosed       = "TRADE_CLOSED"   // 交易关闭
+	TradeStatusFinished     = "TRADE_FINISHED" // 交易完结
+	TradeStatusSuccess      = "TRADE_SUCCESS"  // 支付成功
+	TradeStatusWaitBuyerPay = "WAIT_BUYER_PAY" // 交易创建
 
 	TransInTypeCard  = "cardAliasNo" // 结算收款方的银行卡编号
 	TransInTypeUser  = "userId"      // 表示是支付宝账号对应的支付宝唯一用户号
