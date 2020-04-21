@@ -7,9 +7,9 @@ import (
 )
 
 // 支付通知的处理
-func (c Client) NotifyPay(rawUrl string) (params NotifyPayParams, origin map[string]interface{}, err error) {
+func (c Client) NotifyPay(bodyStr string) (params NotifyPayParams, origin map[string]interface{}, err error) {
 	// 解析并验证签名
-	origin, err = c.payNotifyParseParams(rawUrl, &params)
+	origin, err = c.payNotifyParseParams(bodyStr, &params)
 	if err != nil {
 		return
 	}
@@ -31,22 +31,19 @@ type NotifyPayParams struct {
 	AppId     string `json:"app_id"`      // 应用ID
 	AuthAppId string `json:"auth_app_id"` // 授权商户应用ID
 	Chatset   string `json:"charset"`     // 字符集，参见constant.go
-	Sign      string `json:"sign"`        // 签名
-	SignType  string `json:"sign_type"`   // 签名类型，参见constant.go
 	Version   string `json:"version"`     // 接口版本，参见constant.go
 	// 业务参数
-	TradeQueryResponse
+	TradeNo      string `json:"trade_no"`       // 支付宝交易号
+	OutTradeNo   string `json:"out_trade_no"`   // 商户订单号
+	BuyerLogonId string `json:"buyer_logon_id"` // 买家支付宝账号
+	TradeStatus  string `json:"trade_status"`   // 交易状态
+	TotalAmount  string `json:"total_amount"`   // 订单总金额
 }
 
 // 验证签名
-func (c Client) payNotifyParseParams(rawUrl string, params *NotifyPayParams) (origin map[string]interface{}, err error) {
-	// 转换url对象
-	urlObj, err := url.Parse(rawUrl)
-	if err != nil {
-		return
-	}
+func (c Client) payNotifyParseParams(bodyStr string, params *NotifyPayParams) (origin map[string]interface{}, err error) {
 	// 解析查询部分
-	queryMap, err := url.ParseQuery(urlObj.RawQuery)
+	queryMap, err := url.ParseQuery(bodyStr)
 	if err != nil {
 		return
 	}
@@ -55,6 +52,7 @@ func (c Client) payNotifyParseParams(rawUrl string, params *NotifyPayParams) (or
 	if value, ok := queryMap["sign"]; ok {
 		sign = value[0]
 		delete(queryMap, "sign")
+		delete(queryMap, "sign_type")
 	} else {
 		err = errors.New("没有回传数字签名")
 		return
